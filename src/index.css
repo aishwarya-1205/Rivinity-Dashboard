@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 4 5% 4%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 4 5% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 4 5% 4%;
+
+    --primary: 27 100% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 17% 98%;
+    --secondary-foreground: 4 5% 4%;
+
+    --muted: 210 14% 95%;
+    --muted-foreground: 0 0% 29%;
+
+    /* ✅ CORE COLORS */
+    --accent: 27 100% 55%;
+    --highlight: 244 100% 69%;
+
+    /* ✅ GRADIENT SYSTEM (IMPORTANT) */
+    --gradient-main: linear-gradient(
+      135deg,
+      hsl(var(--accent)),
+      hsl(var(--highlight))
+    );
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 210 14% 91%;
+    --input: 210 14% 91%;
+    --ring: 27 100% 55%;
+
+    --radius: 0.75rem;
+
+    /* Glass */
+    --glass-bg: 0 0% 100% / 0.6;
+    --glass-bg-strong: 0 0% 100% / 0.85;
+    --glass-bg-subtle: 0 0% 100% / 0.4;
+    --glass-border: 0 0% 0% / 0.04;
+    --glass-border-hover: 0 0% 0% / 0.08;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 4 5% 4%;
+    --sidebar-primary: 27 100% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 17% 98%;
+    --sidebar-accent-foreground: 4 5% 4%;
+    --sidebar-border: 210 14% 91%;
+    --sidebar-ring: 27 100% 55%;
+  }
+
+  .dark {
+  /* 🌌 BASE (INDIGO DARK) */
+  --background: 230 35% 10%;   /* ~ #0f1224 */
+  --foreground: 0 0% 96%;
+
+  --card: 230 30% 14%;         /* slightly lighter */
+  --card-foreground: 0 0% 96%;
+
+  --popover: 230 30% 14%;
+  --popover-foreground: 0 0% 96%;
+
+  --primary: 0 0% 96%;
+  --primary-foreground: 230 35% 10%;
+
+  --secondary: 230 25% 16%;
+  --secondary-foreground: 0 0% 96%;
+
+  --muted: 230 20% 18%;
+  --muted-foreground: 220 10% 70%;
+
+  /* 🔥 KEEP YOUR BRAND COLORS */
+  --accent: 27 100% 55%;
+  --highlight: 244 100% 69%;
+
+  --border: 230 20% 22%;
+  --input: 230 20% 22%;
+  --ring: 27 100% 55%;
+
+  /* 🌫 Glass tuned for indigo */
+  --glass-bg: 230 30% 14% / 0.6;
+  --glass-bg-strong: 230 30% 16% / 0.85;
+  --glass-bg-subtle: 230 25% 12% / 0.4;
+
+  --glass-border: 0 0% 100% / 0.06;
+  --glass-border-hover: 0 0% 100% / 0.1;
+
+  --sidebar-background: 230 35% 10%;
+  --sidebar-foreground: 0 0% 96%;
+  --sidebar-border: 230 20% 22%;
+}
+}
+
+/* =========================
+   🌈 BACKGROUND (FIXED)
+   ========================= */
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  @apply text-foreground;
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      hsl(var(--accent) / 0.14),
+      transparent 35%
+    ),
+    linear-gradient(
+      to bottom,
+      hsl(0 0% 100%),
+      hsl(210 17% 98%)
+    );
+
+  background-attachment: fixed;
+  }
+
+  .dark body {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      hsl(var(--accent) / 0.18),
+      transparent 55%
+    ),
+    linear-gradient(
+      to bottom,
+      #0f1224,
+      #0a0c1a
+    );
+
+  background-attachment: fixed;
+}
+}
+
+/* =========================
+   🎨 GRADIENT UTILITIES
+   ========================= */
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-main);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-main);
+  }
+
+  .gradient-accent-text {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient {
+    background: var(--gradient-main);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Glass */
+  .glass {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(16px);
+  }
+
+  .glass-strong {
+    background: hsl(var(--glass-bg-strong));
+    backdrop-filter: blur(20px);
+  }
+
+  .glass-subtle {
+    background: hsl(var(--glass-bg-subtle));
+    backdrop-filter: blur(12px);
+  }
+
+  .border-glass {
+    border-color: hsl(var(--glass-border));
+  }
+
+  .border-glass-hover:hover {
+    border-color: hsl(var(--glass-border-hover));
+  }
+
+  .shadow-float {
+    box-shadow:
+      0 2px 20px -4px hsl(0 0% 0% / 0.12),
+      0 1px 4px -1px hsl(0 0% 0% / 0.06);
+  }
+
+  .shadow-glow-accent {
+  box-shadow:
+    0 0 0 1px hsl(var(--accent) / 0.25),
+    0 6px 30px hsl(var(--highlight) / 0.25);
+}
+
+  .input-glow:focus-within {
+    box-shadow:
+      0 0 0 1.5px hsl(var(--accent) / 0.25),
+      0 4px 24px hsl(var(--highlight) / 0.12);
+  }
+
+  .surface-interactive {
+    @apply glass border border-glass rounded-xl;
+  }
+
+  .surface-interactive-hover {
+    @apply glass border border-glass rounded-xl hover:shadow-float transition-all duration-200;
+  }
+}
+
+/* Animations */
+@keyframes float-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes orb-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
+.animate-float-in { animation: float-in 0.25s ease-out; }
+.animate-orb { animation: orb-pulse 4s ease-in-out infinite; }
