@@ -35,7 +35,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
         WebkitBackdropFilter: "blur(24px)",
         borderRight: "1px solid rgba(255,255,255,0.08)",
         boxShadow:
-          "inset -1px 0 0 rgba(255,255,255,0.04), 4px 0 24px rgba(0,0,0,0.15)",
+          "4px 0 32px rgba(0,0,0,0.12), inset -1px 0 0 rgba(255,255,255,0.05)",
       }}
     >
       {/* Logo row */}
@@ -79,13 +79,8 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
             <button
               key={c.id}
               className="w-full text-left px-3 py-2 rounded-xl transition-colors duration-150"
-              style={
-                {
-                  ":hover": { background: "rgba(255,255,255,0.06)" },
-                } as React.CSSProperties
-              }
               onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(255,255,255,0.06)")
+                (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.background = "transparent")
@@ -94,7 +89,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
               <p className="text-[13px] text-foreground/70 truncate">
                 {c.title}
               </p>
-              <p className="text-[11px] text-muted-foreground/35 mt-0.5">
+              <p className="text-[11px] text-muted-foreground/40 mt-0.5">
                 {c.time}
               </p>
             </button>
@@ -113,7 +108,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
               key={c.id}
               className="w-full text-left px-3 py-2 rounded-xl transition-colors duration-150"
               onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(255,255,255,0.06)")
+                (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
               }
               onMouseLeave={(e) =>
                 (e.currentTarget.style.background = "transparent")
@@ -122,7 +117,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
               <p className="text-[13px] text-foreground/70 truncate">
                 {c.title}
               </p>
-              <p className="text-[11px] text-muted-foreground/35 mt-0.5">
+              <p className="text-[11px] text-muted-foreground/40 mt-0.5">
                 {c.time}
               </p>
             </button>
@@ -133,9 +128,9 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
       {/* Footer */}
       <div
         className="px-5 py-4"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+        style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}
       >
-        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/35">
+        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40">
           <Clock className="w-3 h-3" />
           <span>7 chats this week</span>
         </div>

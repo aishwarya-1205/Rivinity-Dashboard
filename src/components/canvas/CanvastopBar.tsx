@@ -20,6 +20,7 @@ import {
   Palette,
   User,
   Check,
+  X,
 } from "lucide-react";
 
 type Theme = "light" | "dark" | "system";
@@ -41,17 +42,13 @@ const useAnchorRect = (
 
 const applyTheme = (theme: Theme) => {
   const root = document.documentElement;
-  if (theme === "dark") {
-    root.classList.add("dark");
-  } else if (theme === "light") {
-    root.classList.remove("dark");
-  } else {
-    // system
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    root.classList.toggle("dark", prefersDark);
-  }
+  if (theme === "dark") root.classList.add("dark");
+  else if (theme === "light") root.classList.remove("dark");
+  else
+    root.classList.toggle(
+      "dark",
+      window.matchMedia("(prefers-color-scheme: dark)").matches,
+    );
   localStorage.setItem("rivinity-theme", theme);
 };
 
@@ -59,6 +56,9 @@ export const initTheme = () => {
   const saved = localStorage.getItem("rivinity-theme") as Theme | null;
   applyTheme(saved ?? "system");
 };
+
+/* Detect mobile viewport */
+const isMobile = () => window.innerWidth < 640;
 
 const CanvasTopBar = () => {
   const savedTheme =
@@ -80,33 +80,11 @@ const CanvasTopBar = () => {
   const settingsRect = useAnchorRect(settingsBtnRef, settingsOpen);
   const profileRect = useAnchorRect(profileBtnRef, profileOpen);
 
-  const applyFontSize = (size: FontSize) => {
-    const root = document.documentElement;
-
-    root.classList.remove("text-sm", "text-base", "text-lg");
-
-    if (size === "sm") root.classList.add("text-sm");
-    if (size === "md") root.classList.add("text-base");
-    if (size === "lg") root.classList.add("text-lg");
-
-    localStorage.setItem("rivinity-font-size", size);
-  };
-
-  const applyAccent = (color: string) => {
-    const root = document.documentElement;
-
-    root.style.setProperty("--accent", color);
-
-    localStorage.setItem("rivinity-accent", color);
-  };
-
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
-
     const handler = () => {
       if (theme === "system") applyTheme("system");
     };
-
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, [theme]);
@@ -119,7 +97,6 @@ const CanvasTopBar = () => {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as Node;
-
       if (
         !settingsBtnRef.current?.contains(target) &&
         !settingsPanelRef.current?.contains(target)
@@ -163,11 +140,67 @@ const CanvasTopBar = () => {
     { keys: ["Esc"], action: "Close panel" },
   ];
 
+  /* ── Compute panel position: anchored on desktop, centered sheet on mobile ── */
+  const getSettingsStyle = (): React.CSSProperties => {
+    if (isMobile()) {
+      // Full-width bottom sheet on mobile
+      return {
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: "100%",
+        maxHeight: "85vh",
+        borderRadius: "20px 20px 0 0",
+        zIndex: 9999,
+        overflowY: "auto",
+      };
+    }
+    if (!settingsRect) return { display: "none" };
+    return {
+      position: "fixed",
+      top: settingsRect.bottom + 8,
+      right: window.innerWidth - settingsRect.right - 4,
+      width: 420,
+      zIndex: 9999,
+    };
+  };
+
+  const getProfileStyle = (): React.CSSProperties => {
+    if (isMobile()) {
+      return {
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: "100%",
+        borderRadius: "20px 20px 0 0",
+        zIndex: 9999,
+      };
+    }
+    if (!profileRect) return { display: "none" };
+    return {
+      position: "fixed",
+      top: profileRect.bottom + 8,
+      right: window.innerWidth - profileRect.right,
+      width: 220,
+      zIndex: 9999,
+    };
+  };
+
   return (
     <>
-      <header className="flex items-center justify-between pl-14 pr-5 py-3 backdrop-blur-xl bg-white/5 dark:bg-white/5 border-b border-white/10">
+      <header
+        className="flex items-center justify-between px-5 py-3"
+        style={{
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          background: "rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.07)",
+        }}
+      >
         {/* Left */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pl-9">
           <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           <span className="text-sm font-medium text-foreground/80">
             Rivinity Core
@@ -191,7 +224,6 @@ const CanvasTopBar = () => {
           >
             <Settings className="w-4 h-4" />
           </button>
-
           <button
             ref={profileBtnRef}
             onClick={() => {
@@ -207,48 +239,82 @@ const CanvasTopBar = () => {
         </div>
       </header>
 
-      {settingsOpen && settingsRect && (
+      {/* ── Backdrop for mobile panels ── */}
+      {(settingsOpen || profileOpen) && (
+        <Portal>
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm sm:hidden"
+            style={{ zIndex: 9998 }}
+            onClick={() => {
+              setSettingsOpen(false);
+              setProfileOpen(false);
+            }}
+          />
+        </Portal>
+      )}
+
+      {/* ── Settings panel ── */}
+      {settingsOpen && (settingsRect || isMobile()) && (
         <Portal>
           <div
             ref={settingsPanelRef}
-            className="glass-strong border border-glass rounded-2xl shadow-float overflow-hidden animate-float-in"
-            style={{
-              position: "fixed",
-              top: settingsRect.bottom + 8,
-              right: window.innerWidth - settingsRect.right - 4,
-              width: 420,
-              zIndex: 9999,
-            }}
+            className="glass-strong border border-glass shadow-float overflow-hidden animate-float-in"
+            style={getSettingsStyle()}
           >
-            {/* Header */}
-            <div className="px-5 pt-5 pb-4 border-b border-border/40">
-              <p className="text-sm font-semibold text-foreground">Settings</p>
-              <p className="text-[11px] text-muted-foreground/60 mt-0.5">
-                Customize your Rivinity experience
-              </p>
+            {/* Mobile drag handle */}
+            <div className="sm:hidden flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-muted-foreground/20" />
             </div>
 
-            <div className="flex">
-              {/* Nav */}
-              <nav className="w-[140px] shrink-0 border-r border-border/40 py-3 px-2 flex flex-col gap-0.5">
+            {/* Header row with close on mobile */}
+            <div className="px-5 pt-4 pb-4 border-b border-border/40 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  Settings
+                </p>
+                <p className="text-[11px] text-muted-foreground/60 mt-0.5">
+                  Customize your Rivinity experience
+                </p>
+              </div>
+              <button
+                onClick={() => setSettingsOpen(false)}
+                className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:bg-muted transition-all"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Body — stacked on mobile, side-by-side on desktop */}
+            <div
+              className="flex flex-col sm:flex-row"
+              style={{ maxHeight: isMobile() ? "70vh" : undefined }}
+            >
+              {/* Nav — horizontal scroll on mobile, vertical on desktop */}
+              <nav
+                className="sm:w-[140px] sm:shrink-0 sm:border-r border-border/40 sm:py-3 sm:px-2 sm:flex-col gap-0.5
+                              flex flex-row overflow-x-auto px-4 py-2 border-b sm:border-b-0 scrollbar-none"
+              >
                 {sections.map((s) => (
                   <button
                     key={s.id}
                     onClick={() => setActiveSection(s.id)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] font-medium transition-all duration-150 text-left w-full ${
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] font-medium transition-all duration-150 shrink-0 sm:w-full text-left ${
                       activeSection === s.id
                         ? "bg-[#ff7a18]/10 text-[#ff7a18]"
                         : "text-muted-foreground/60 hover:bg-muted hover:text-foreground/70"
                     }`}
                   >
                     <s.icon className="w-3.5 h-3.5 shrink-0" />
-                    {s.label}
+                    <span className="sm:inline">{s.label}</span>
                   </button>
                 ))}
               </nav>
 
               {/* Content */}
-              <div className="flex-1 p-4 space-y-5 max-h-[340px] overflow-y-auto">
+              <div
+                className="flex-1 p-4 space-y-5 overflow-y-auto"
+                style={{ maxHeight: isMobile() ? "55vh" : "340px" }}
+              >
                 {activeSection === "appearance" && (
                   <>
                     <div>
@@ -277,7 +343,6 @@ const CanvasTopBar = () => {
                         ))}
                       </div>
                     </div>
-
                     <div>
                       <p className="text-[11px] font-semibold text-muted-foreground/50 uppercase tracking-wider mb-2.5">
                         Font Size
@@ -286,10 +351,7 @@ const CanvasTopBar = () => {
                         {fontSizes.map((f) => (
                           <button
                             key={f.value}
-                            onClick={() => {
-                              setFontSize(f.value);
-                              applyFontSize(f.value);
-                            }}
+                            onClick={() => setFontSize(f.value)}
                             className={`flex-1 py-2 rounded-lg border text-center transition-all duration-150 ${f.size} ${
                               fontSize === f.value
                                 ? "border-[#ff7a18]/40 bg-[#ff7a18]/10 text-[#ff7a18] font-medium"
@@ -301,7 +363,6 @@ const CanvasTopBar = () => {
                         ))}
                       </div>
                     </div>
-
                     <div>
                       <p className="text-[11px] font-semibold text-muted-foreground/50 uppercase tracking-wider mb-2.5">
                         Accent Color
@@ -317,11 +378,7 @@ const CanvasTopBar = () => {
                           <button
                             key={i}
                             style={{ backgroundColor: color }}
-                            className={`w-7 h-7 rounded-full transition-transform hover:scale-110 ${
-                              i === 0
-                                ? "ring-2 ring-offset-2 ring-[#ff7a18]/60"
-                                : ""
-                            }`}
+                            className={`w-7 h-7 rounded-full transition-transform hover:scale-110 ${i === 0 ? "ring-2 ring-offset-2 ring-[#ff7a18]/60" : ""}`}
                           />
                         ))}
                       </div>
@@ -329,7 +386,6 @@ const CanvasTopBar = () => {
                   </>
                 )}
 
-                {/* Notifications */}
                 {activeSection === "notifications" && (
                   <>
                     <ToggleRow
@@ -349,7 +405,6 @@ const CanvasTopBar = () => {
                   </>
                 )}
 
-                {/* Chat */}
                 {activeSection === "chat" && (
                   <>
                     <div>
@@ -403,7 +458,6 @@ const CanvasTopBar = () => {
                   </>
                 )}
 
-                {/* Privacy */}
                 {activeSection === "privacy" && (
                   <>
                     <ToggleRow
@@ -423,7 +477,6 @@ const CanvasTopBar = () => {
                   </>
                 )}
 
-                {/* Shortcuts */}
                 {activeSection === "shortcuts" && (
                   <div className="space-y-1.5">
                     {shortcuts.map((s, i) => (
@@ -454,32 +507,39 @@ const CanvasTopBar = () => {
         </Portal>
       )}
 
-      {/* Profile */}
-      {profileOpen && profileRect && (
+      {/* ── Profile dropdown ── */}
+      {profileOpen && (profileRect || isMobile()) && (
         <Portal>
           <div
             ref={profilePanelRef}
-            className="glass-strong border border-glass rounded-2xl shadow-float overflow-hidden animate-float-in"
-            style={{
-              position: "fixed",
-              top: profileRect.bottom + 8,
-              right: window.innerWidth - profileRect.right,
-              width: 220,
-              zIndex: 9999,
-            }}
+            className="glass-strong border border-glass shadow-float overflow-hidden animate-float-in"
+            style={getProfileStyle()}
           >
-            <div className="px-4 py-4 border-b border-border/40 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center text-white text-sm font-bold shrink-0">
-                JD
+            {/* Mobile drag handle */}
+            <div className="sm:hidden flex justify-center pt-3 pb-1">
+              <div className="w-10 h-1 rounded-full bg-muted-foreground/20" />
+            </div>
+
+            <div className="px-4 py-4 border-b border-border/40 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl gradient-accent flex items-center justify-center text-white text-sm font-bold shrink-0">
+                  JD
+                </div>
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold text-foreground truncate">
+                    John Doe
+                  </p>
+                  <p className="text-[11px] text-muted-foreground/50 truncate">
+                    john@rivinity.ai
+                  </p>
+                </div>
               </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">
-                  John Doe
-                </p>
-                <p className="text-[11px] text-muted-foreground/50 truncate">
-                  john@rivinity.ai
-                </p>
-              </div>
+              <button
+                onClick={() => setProfileOpen(false)}
+                className="sm:hidden w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:bg-muted transition-all"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
 
             <div className="p-2 space-y-0.5">
