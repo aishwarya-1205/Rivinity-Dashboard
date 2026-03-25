@@ -32,8 +32,10 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
   const { files, addFiles, removeFile } = useFiles();
   return (
     <aside
-      className={`h-full flex-col py-5 px-3 shrink-0 flex gap-5 overflow-y-auto bg-background border-l border-border/40 lg:relative fixed top-0 right-0 z-40 shadow-2xl lg:shadow-none transition-all duration-300 ease-in-out ${
-        isOpen ? "translate-x-0 w-[220px] opacity-100" : "translate-x-full lg:translate-x-0 lg:w-0 lg:px-0 lg:opacity-0 pointer-events-none lg:pointer-events-auto"
+      className={`h-full flex-col py-5 px-3 shrink-0 flex gap-5 overflow-y-auto bg-background  lg:relative fixed top-0 right-0 z-40 shadow-2xl lg:shadow-none transition-all duration-300 ease-in-out ${
+        isOpen
+          ? "translate-x-0 w-[220px] opacity-100"
+          : "translate-x-full lg:translate-x-0 lg:w-0 lg:px-0 lg:opacity-0 pointer-events-none lg:pointer-events-auto"
       }`}
     >
       <div>

@@ -229,8 +229,8 @@ const AppBuilderTopBar = ({
               ref={settingsModalRef}
               className="glass-strong border border-glass shadow-float w-full overflow-hidden"
               style={{
-                maxWidth: 640,
-                maxHeight: "85vh",
+                width: 640,
+                height: 540,
                 borderRadius: 16,
                 animation: "scaleIn 0.18s cubic-bezier(0.34,1.56,0.64,1)",
                 display: "flex",

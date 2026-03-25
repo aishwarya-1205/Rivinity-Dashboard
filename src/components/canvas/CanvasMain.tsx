@@ -200,7 +200,7 @@ const CanvasMain = () => {
 
           <div className="h-full flex flex-col items-center px-4 sm:px-6">
 
-            <div className="flex-[2]" />
+            <div className="flex-[3]" />
 
             {/* Content block */}
             <div className="w-full max-w-[660px] flex flex-col items-center">
