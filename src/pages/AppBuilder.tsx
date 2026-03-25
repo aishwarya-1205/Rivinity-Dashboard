@@ -1,11 +1,11 @@
 import { useState } from "react";
 import CanvasSidebar from "@/components/canvas/CanvasSidebar";
-import CanvasTopBar from "@/components/canvas/CanvastopBar";
-import CanvasMain from "@/components/canvas/CanvasMain";
-import CanvasRightPanel from "@/components/canvas/CanvasRightPanel";
+import AppBuilderTopBar from "@/components/app-builder/AppBuilderTopBar";
+import AppBuilderMain from "@/components/app-builder/AppBuilderMain";
+import AppBuilderRightPanel from "@/components/app-builder/AppBuilderRightPanel";
 import { PanelLeft } from "lucide-react";
 
-const Index = () => {
+const AppBuilder = () => {
   const [sidebarOpen, setSidebarOpen] = useState(
     () => window.innerWidth >= 1024,
   );
@@ -15,8 +15,7 @@ const Index = () => {
 
   return (
     <div className="h-screen flex bg-background overflow-hidden relative">
-
-      {/* ── Mobile backdrop for LEFT sidebar ── */}
+      {/* Mobile overlay backdrop for left sidebar */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
@@ -24,7 +23,7 @@ const Index = () => {
         />
       )}
 
-      {/* ── Mobile backdrop for RIGHT panel ── */}
+      {/* Mobile overlay backdrop for right panel */}
       {rightPanelOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
@@ -32,57 +31,36 @@ const Index = () => {
         />
       )}
 
-      {/*
-       * ── Sidebar wrapper ──
-       * Width animates between 0 and 260px.
-       * overflow:hidden when closed clips the 260px-wide sidebar content.
-       * overflow:visible when open lets shadows paint outside the box.
-       *
-       * On mobile  → fixed, z-40 (above backdrop)
-       * On desktop → relative, z-auto (participates in normal flex flow)
-       *
-       * ✅ CanvasSidebar no longer has `hidden lg:flex` so it always
-       *    renders inside this wrapper and becomes visible as soon as
-       *    the wrapper expands to 260px.
-       */}
+      {/* Left sidebar */}
       <div
-        className="shrink-0 transition-all duration-300 ease-in-out fixed inset-y-0 left-0 z-40 lg:relative lg:inset-auto lg:z-auto"
-        style={{
-          width: sidebarOpen ? 260 : 0,
-          overflow: sidebarOpen ? "visible" : "hidden",
-        }}
+        className="shrink-0 transition-all duration-300 ease-in-out lg:relative lg:z-auto fixed inset-y-0 left-0 z-40"
+        style={{ width: sidebarOpen ? 260 : 0, overflow: "hidden" }}
       >
         <CanvasSidebar onClose={() => setSidebarOpen(false)} />
       </div>
 
-      {/* ── Middle column ── */}
+      {/* Middle column */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative transition-all duration-300">
-
-        {/*
-         * Sidebar toggle button.
-         * Stays in the top-left of the middle column on all screen sizes.
-         * Clicking it toggles the sidebar open/closed.
-         */}
         <button
           onClick={() => setSidebarOpen((v) => !v)}
           className="absolute top-3 left-3 z-20 w-8 h-8 rounded-xl glass border border-glass shadow-float flex items-center justify-center text-muted-foreground/60 hover:text-foreground/80 hover:shadow-glow-accent transition-all duration-200"
-          aria-label="Toggle sidebar"
         >
           <PanelLeft className="w-4 h-4" />
         </button>
 
-        <CanvasTopBar
+        <AppBuilderTopBar
           rightPanelOpen={rightPanelOpen}
           setRightPanelOpen={setRightPanelOpen}
         />
 
+        {/* Inner flex-1 for scrolling */}
         <div className="flex-1 min-h-0 relative">
-          <CanvasMain />
+          <AppBuilderMain />
         </div>
       </div>
 
-      {/* ── Right panel ── */}
-      <CanvasRightPanel
+      {/* Right panel */}
+      <AppBuilderRightPanel
         isOpen={rightPanelOpen}
         onClose={() => setRightPanelOpen(false)}
       />
@@ -90,4 +68,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default AppBuilder;

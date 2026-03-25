@@ -3,32 +3,25 @@ import {
   Zap,
   Globe,
   Layout,
-  Database,
-  Shield,
+  Palette,
+  Smartphone,
   FolderOpen,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { useFiles } from "../context/FileContext";
 
 const tools = [
   { icon: Globe, label: "Web Search", color: "text-primary" },
-  {
-    icon: Layout,
-    label: "App Builder",
-    color: "text-primary",
-    route: "/app-builder",
-  },
-  { icon: Database, label: "Database", color: "text-primary" },
-  { icon: Shield, label: "Security", color: "text-primary" },
+  { icon: Layout, label: "Templates", color: "text-primary" },
+  { icon: Palette, label: "Design", color: "text-primary" },
+  { icon: Smartphone, label: "Preview", color: "text-primary" },
 ];
 
-interface CanvasRightPanelProps {
+interface AppBuilderRightPanelProps {
   isOpen?: boolean;
   onClose?: () => void;
 }
 
-const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
-  const navigate = useNavigate();
+const AppBuilderRightPanel = ({ isOpen, onClose }: AppBuilderRightPanelProps) => {
   const { files, addFiles, removeFile } = useFiles();
   return (
     <aside
@@ -47,7 +40,7 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
             </div>
             <div>
               <p className="text-[12.5px] font-medium text-foreground leading-tight">
-                Rivinity Core
+                Rivinity Builder
               </p>
               <p className="text-[10px] text-muted-foreground/45">
                 v2.4 · 128k ctx
@@ -71,8 +64,7 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
           {tools.map((t) => (
             <button
               key={t.label}
-              onClick={() => t.route && navigate(t.route)}
-              className={`glass flex flex-col items-center gap-1.5 p-3 rounded-xl border border-glass border-glass-hover transition-all duration-150 ${t.route ? "cursor-pointer hover:shadow-float" : ""}`}
+              className={`glass flex flex-col items-center gap-1.5 p-3 rounded-xl border border-glass border-glass-hover transition-all duration-150 cursor-pointer hover:shadow-float`}
             >
               <t.icon className={`w-4 h-4 ${t.color}`} />
               <span className="text-[11px] font-medium text-foreground/70">
@@ -97,7 +89,7 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
           multiple
           accept=".pdf,.png,.jpg,.jpeg,.txt"
           className="hidden"
-          id="fileUpload-canvas"
+          id="fileUpload-appbuilder"
           onChange={(e) => {
             if (!e.target.files) return;
             addFiles(Array.from(e.target.files));
@@ -105,10 +97,11 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
         />
 
         <label
-          htmlFor="fileUpload-canvas" // ✅ FIXED
+          htmlFor="fileUpload-appbuilder"
           className="cursor-pointer flex flex-col items-center justify-center w-full"
         >
           <FolderOpen className="w-7 h-7 text-muted-foreground/40 mb-2" />
+
           <p className="text-[11px] text-muted-foreground/50">
             {files.length === 0
               ? "Drop files or click to upload"
@@ -139,4 +132,4 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
   );
 };
 
-export default CanvasRightPanel;
+export default AppBuilderRightPanel;

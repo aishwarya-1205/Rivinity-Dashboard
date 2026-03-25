@@ -26,19 +26,7 @@ interface CanvasSidebarProps {
 
 const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
   return (
-    <aside
-      className="w-[260px] h-full flex flex-col shrink-0"
-      style={{
-        background:
-          "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
-        backdropFilter: "blur(24px)",
-        WebkitBackdropFilter: "blur(24px)",
-        borderRight: "1px solid rgba(255,255,255,0.08)",
-        boxShadow:
-          "4px 0 32px rgba(0,0,0,0.12), inset -1px 0 0 rgba(255,255,255,0.05)",
-      }}
-    >
-      {/* Logo row */}
+    <aside className="w-[260px] h-full flex flex-col shrink-0 bg-background">
       <div className="px-5 pt-5 pb-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-xl gradient-accent flex items-center justify-center">
@@ -48,17 +36,18 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
             Rivinity
           </span>
         </div>
+        {/* Close button — shown on mobile so user can dismiss */}
         {onClose && (
           <button
             onClick={onClose}
-            className="md:hidden w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-foreground/70 hover:bg-white/5 transition-all"
+            aria-label="Close sidebar"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/50 hover:text-foreground/70 transition-all lg:hidden"
           >
             <X className="w-4 h-4" />
           </button>
         )}
       </div>
 
-      {/* New Chat */}
       <div className="px-4 mb-4">
         <button className="w-full h-9 rounded-full gradient-accent text-primary-foreground text-sm font-medium flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
           <Plus className="w-4 h-4" />
@@ -66,7 +55,6 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
         </button>
       </div>
 
-      {/* Conversations */}
       <div className="flex-1 overflow-y-auto px-3">
         <div className="mb-5">
           <div className="flex items-center gap-1.5 px-2 mb-1.5">
@@ -78,13 +66,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
           {conversations.map((c) => (
             <button
               key={c.id}
-              className="w-full text-left px-3 py-2 rounded-xl transition-colors duration-150"
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "transparent")
-              }
+              className="w-full text-left px-3 py-2 rounded-xl hover:bg-muted/50 transition-colors duration-150"
             >
               <p className="text-[13px] text-foreground/70 truncate">
                 {c.title}
@@ -106,13 +88,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
           {saved.map((c) => (
             <button
               key={c.id}
-              className="w-full text-left px-3 py-2 rounded-xl transition-colors duration-150"
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(0,0,0,0.04)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "transparent")
-              }
+              className="w-full text-left px-3 py-2 rounded-xl hover:bg-muted/50 transition-colors duration-150"
             >
               <p className="text-[13px] text-foreground/70 truncate">
                 {c.title}
@@ -125,11 +101,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
         </div>
       </div>
 
-      {/* Footer */}
-      <div
-        className="px-5 py-4"
-        style={{ borderTop: "1px solid rgba(0,0,0,0.06)" }}
-      >
+      <div className="px-5 py-4">
         <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/40">
           <Clock className="w-3 h-3" />
           <span>7 chats this week</span>

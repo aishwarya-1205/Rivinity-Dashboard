@@ -42,20 +42,20 @@ const applyTheme = (theme: Theme) => {
   localStorage.setItem("rivinity-theme", theme);
 };
 
-export const initTheme = () => {
+export const initAppBuilderTheme = () => {
   const saved = localStorage.getItem("rivinity-theme") as Theme | null;
   applyTheme(saved ?? "system");
 };
 
-interface CanvasTopBarProps {
+interface AppBuilderTopBarProps {
   rightPanelOpen?: boolean;
   setRightPanelOpen?: (open: boolean) => void;
 }
 
-const CanvasTopBar = ({
+const AppBuilderTopBar = ({
   rightPanelOpen,
   setRightPanelOpen,
-}: CanvasTopBarProps) => {
+}: AppBuilderTopBarProps) => {
   const savedTheme =
     (localStorage.getItem("rivinity-theme") as Theme) ?? "system";
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -161,7 +161,7 @@ const CanvasTopBar = ({
         <div className="flex items-center gap-2 pl-9">
           <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
           <span className="text-sm font-medium text-foreground/80">
-            Rivinity Core
+            Rivinity Builder
           </span>
           <ChevronDown className="w-3.5 h-3.5 text-muted-foreground/50" />
         </div>
@@ -591,4 +591,4 @@ const ToggleRow = ({
   </div>
 );
 
-export default CanvasTopBar;
+export default AppBuilderTopBar;

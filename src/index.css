@@ -29,11 +29,9 @@
     --highlight: 244 100% 69%;
 
     /* ✅ GRADIENT SYSTEM (IMPORTANT) */
-    --gradient-main: linear-gradient(
-      135deg,
-      hsl(var(--accent)),
-      hsl(var(--highlight))
-    );
+    --gradient-main: linear-gradient(135deg,
+        hsl(var(--accent)),
+        hsl(var(--highlight)));
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
@@ -62,45 +60,47 @@
   }
 
   .dark {
-  /* 🌌 BASE (INDIGO DARK) */
-  --background: 230 35% 10%;   /* ~ #0f1224 */
-  --foreground: 0 0% 96%;
+    /* 🌌 BASE (INDIGO DARK) */
+    --background: 230 35% 10%;
+    /* ~ #0f1224 */
+    --foreground: 0 0% 96%;
 
-  --card: 230 30% 14%;         /* slightly lighter */
-  --card-foreground: 0 0% 96%;
+    --card: 230 30% 14%;
+    /* slightly lighter */
+    --card-foreground: 0 0% 96%;
 
-  --popover: 230 30% 14%;
-  --popover-foreground: 0 0% 96%;
+    --popover: 230 30% 14%;
+    --popover-foreground: 0 0% 96%;
 
-  --primary: 0 0% 96%;
-  --primary-foreground: 230 35% 10%;
+    --primary: 0 0% 96%;
+    --primary-foreground: 230 35% 10%;
 
-  --secondary: 230 25% 16%;
-  --secondary-foreground: 0 0% 96%;
+    --secondary: 230 25% 16%;
+    --secondary-foreground: 0 0% 96%;
 
-  --muted: 230 20% 18%;
-  --muted-foreground: 220 10% 70%;
+    --muted: 230 20% 18%;
+    --muted-foreground: 220 10% 70%;
 
-  /* 🔥 KEEP YOUR BRAND COLORS */
-  --accent: 27 100% 55%;
-  --highlight: 244 100% 69%;
+    /* 🔥 KEEP YOUR BRAND COLORS */
+    --accent: 27 100% 55%;
+    --highlight: 244 100% 69%;
 
-  --border: 230 20% 22%;
-  --input: 230 20% 22%;
-  --ring: 27 100% 55%;
+    --border: 230 20% 22%;
+    --input: 230 20% 22%;
+    --ring: 27 100% 55%;
 
-  /* 🌫 Glass tuned for indigo */
-  --glass-bg: 230 30% 14% / 0.6;
-  --glass-bg-strong: 230 30% 16% / 0.85;
-  --glass-bg-subtle: 230 25% 12% / 0.4;
+    /* 🌫 Glass tuned for indigo */
+    --glass-bg: 230 30% 14% / 0.6;
+    --glass-bg-strong: 230 30% 16% / 0.85;
+    --glass-bg-subtle: 230 25% 12% / 0.4;
 
-  --glass-border: 0 0% 100% / 0.06;
-  --glass-border-hover: 0 0% 100% / 0.1;
+    --glass-border: 0 0% 100% / 0.06;
+    --glass-border-hover: 0 0% 100% / 0.1;
 
-  --sidebar-background: 230 35% 10%;
-  --sidebar-foreground: 0 0% 96%;
-  --sidebar-border: 230 20% 22%;
-}
+    --sidebar-background: 230 35% 10%;
+    --sidebar-foreground: 0 0% 96%;
+    --sidebar-border: 230 20% 22%;
+  }
 }
 
 /* =========================
@@ -113,40 +113,32 @@
   }
 
   body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  @apply text-foreground;
-  min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    @apply text-foreground;
+    min-height: 100vh;
 
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      hsl(var(--accent) / 0.14),
-      transparent 35%
-    ),
-    linear-gradient(
-      to bottom,
-      hsl(0 0% 100%),
-      hsl(210 17% 98%)
-    );
+    background:
+      radial-gradient(circle at 50% 0%,
+        hsl(var(--accent) / 0.14),
+        transparent 35%),
+      linear-gradient(to bottom,
+        hsl(0 0% 100%),
+        hsl(210 17% 98%));
 
-  background-attachment: fixed;
+    background-attachment: fixed;
   }
 
   .dark body {
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      hsl(var(--accent) / 0.18),
-      transparent 55%
-    ),
-    linear-gradient(
-      to bottom,
-      #0f1224,
-      #0a0c1a
-    );
+    background:
+      radial-gradient(circle at 50% 0%,
+        hsl(var(--accent) / 0.18),
+        transparent 55%),
+      linear-gradient(to bottom,
+        #0f1224,
+        #0a0c1a);
 
-  background-attachment: fixed;
-}
+    background-attachment: fixed;
+  }
 }
 
 /* =========================
@@ -206,10 +198,10 @@
   }
 
   .shadow-glow-accent {
-  box-shadow:
-    0 0 0 1px hsl(var(--accent) / 0.25),
-    0 6px 30px hsl(var(--highlight) / 0.25);
-}
+    box-shadow:
+      0 0 0 1px hsl(var(--accent) / 0.25),
+      0 6px 30px hsl(var(--highlight) / 0.25);
+  }
 
   .input-glow:focus-within {
     box-shadow:
@@ -228,14 +220,46 @@
 
 /* Animations */
 @keyframes float-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes orb-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.05); opacity: 1; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 }
 
-.animate-float-in { animation: float-in 0.25s ease-out; }
-.animate-orb { animation: orb-pulse 4s ease-in-out infinite; }
+.animate-float-in {
+  animation: float-in 0.25s ease-out;
+}
+
+.animate-orb {
+  animation: orb-pulse 4s ease-in-out infinite;
+}
+
+@layer utilities {
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
