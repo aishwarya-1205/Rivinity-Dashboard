@@ -114,10 +114,14 @@ const SpeechToTextView = () => {
             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-transparent hover:bg-muted/50 transition-all text-[11px] font-medium text-muted-foreground/70"
           >
             <Globe className="w-3.5 h-3.5" />
-            <span>{selectedLanguage.flag} {selectedLanguage.label}</span>
+            <span>
+              {selectedLanguage.flag} {selectedLanguage.label}
+            </span>
             <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
             <span>{diarize ? "Diarization On" : "Diarization Off"}</span>
-            <ChevronDown className={`w-3 h-3 transition-transform ${langDropdownOpen ? "rotate-180" : ""}`} />
+            <ChevronDown
+              className={`w-3 h-3 transition-transform ${langDropdownOpen ? "rotate-180" : ""}`}
+            />
           </button>
 
           {langDropdownOpen && (
@@ -132,10 +136,11 @@ const SpeechToTextView = () => {
                     onClick={() => {
                       setSelectedLanguage(lang);
                     }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] transition-colors ${lang.code === selectedLanguage.code
-                      ? "bg-primary/10 text-primary font-medium"
-                      : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-                      }`}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12px] transition-colors ${
+                      lang.code === selectedLanguage.code
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+                    }`}
                   >
                     <span>{lang.flag}</span> {lang.label}
                   </button>
@@ -147,8 +152,12 @@ const SpeechToTextView = () => {
                   className="w-full flex items-center justify-between text-[11px] font-medium text-foreground/70 hover:text-foreground transition-colors"
                 >
                   Speaker Detection
-                  <div className={`w-7 h-4 rounded-full relative transition-colors ${diarize ? "bg-primary" : "bg-muted-foreground/20"}`}>
-                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${diarize ? "left-3.5" : "left-0.5"}`} />
+                  <div
+                    className={`w-7 h-4 rounded-full relative transition-colors ${diarize ? "bg-primary" : "bg-muted-foreground/20"}`}
+                  >
+                    <div
+                      className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${diarize ? "left-3.5" : "left-0.5"}`}
+                    />
                   </div>
                 </button>
               </div>
@@ -158,7 +167,7 @@ const SpeechToTextView = () => {
       </div>
 
       {/* Main Input Card */}
-      <div className="glass rounded-2xl border border-glass shadow-float p-6 relative overflow-hidden">
+      <div className="glass rounded-2xl border border-glass shadow-float p-3 relative overflow-hidden">
         <div className="flex items-center gap-1 p-1 rounded-xl bg-muted/30 border border-glass/10 w-fit mb-6 mx-auto">
           <button
             onClick={() => setActiveMode("upload")}
@@ -178,15 +187,16 @@ const SpeechToTextView = () => {
           <div className="flex flex-col items-center py-4">
             <button
               onClick={toggleRecording}
-              className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 ${isRecording
-                ? "bg-destructive/15 shadow-[0_0_40px_rgba(239,68,68,0.2)] animate-pulse"
-                : "glass border border-glass hover:shadow-glow-accent"
-                }`}
+              className={`w-20 h-20 rounded-full flex items-center justify-center transition-all duration-300 ${
+                isRecording
+                  ? "bg-destructive/15 shadow-[0_0_40px_rgba(239,68,68,0.2)] animate-pulse"
+                  : "glass border border-glass hover:shadow-glow-accent"
+              }`}
             >
               {isRecording ? (
-                <MicOff className="w-7 h-7 text-destructive" />
+                <MicOff className="w-5 h-5 text-destructive" />
               ) : (
-                <Mic className="w-7 h-7 text-primary" />
+                <Mic className="w-5 h-5 text-primary" />
               )}
             </button>
             <p className="text-[12px] text-foreground/70 mt-4 font-medium">
@@ -251,7 +261,7 @@ const SpeechToTextView = () => {
           <button
             onClick={() => setHasTranscript(true)}
             disabled={activeMode === "upload" && !uploadedFile}
-            className="px-10 py-2.5 rounded-xl gradient-accent text-primary-foreground text-[14px] font-semibold hover:shadow-glow-accent transition-all disabled:opacity-50"
+            className="px-6 py-2.5 rounded-xl gradient-accent text-primary-foreground text-[14px] font-semibold hover:shadow-glow-accent transition-all disabled:opacity-50"
           >
             Transcribe Now
           </button>
@@ -264,7 +274,9 @@ const SpeechToTextView = () => {
           <div className="px-5 py-3 bg-muted/20 border-b border-glass/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-3.5 h-3.5 text-primary" />
-              <span className="text-[12px] font-semibold text-foreground/70">Transcription Focus</span>
+              <span className="text-[12px] font-semibold text-foreground/70">
+                Transcription Focus
+              </span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="relative">
@@ -277,12 +289,20 @@ const SpeechToTextView = () => {
                 </button>
                 {showFullHistory && (
                   <div className="absolute bottom-full right-0 mb-2 z-50 glass-strong rounded-xl border border-glass shadow-float p-3 animate-float-in min-w-[320px] max-h-[300px] overflow-y-auto custom-scrollbar">
-                    <p className="text-[10px] font-bold text-muted-foreground/40 uppercase mb-3">Full Transcript History</p>
+                    <p className="text-[10px] font-bold text-muted-foreground/40 uppercase mb-3">
+                      Full Transcript History
+                    </p>
                     <div className="space-y-4">
                       {sampleTranscript.map((s, i) => (
                         <div key={i} className="flex gap-3">
-                          <span className={`text-[9px] font-bold uppercase shrink-0 w-12 ${s.color}`}>{s.speaker}</span>
-                          <p className="text-[11px] text-foreground/70 leading-relaxed">{s.text}</p>
+                          <span
+                            className={`text-[9px] font-bold uppercase shrink-0 w-12 ${s.color}`}
+                          >
+                            {s.speaker}
+                          </span>
+                          <p className="text-[11px] text-foreground/70 leading-relaxed">
+                            {s.text}
+                          </p>
                         </div>
                       ))}
                     </div>
@@ -290,26 +310,36 @@ const SpeechToTextView = () => {
                 )}
               </div>
               <span className="w-px h-3 bg-glass/20 mx-1" />
-              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all"><Copy className="w-3.5 h-3.5" /></button>
-              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all"><Download className="w-3.5 h-3.5" /></button>
+              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+                <Copy className="w-3.5 h-3.5" />
+              </button>
+              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+                <Download className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
 
           <div className="p-6 flex items-center gap-6">
             <button
               disabled={activeSpeechIndex === 0}
-              onClick={() => setActiveSpeechIndex(prev => prev - 1)}
+              onClick={() => setActiveSpeechIndex((prev) => prev - 1)}
               className="w-10 h-10 rounded-full glass border border-glass flex items-center justify-center text-muted-foreground/40 hover:text-foreground disabled:opacity-20 transition-all"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
 
             <div className="flex-1 flex flex-col items-center text-center py-4">
-              <div className={`px-2.5 py-1 rounded-full bg-accent/20 border border-glass/10 mb-4 inline-block`}>
-                <span className={`text-[10px] uppercase font-black tracking-widest ${sampleTranscript[activeSpeechIndex].color}`}>
+              <div
+                className={`px-2.5 py-1 rounded-full bg-accent/20 border border-glass/10 mb-4 inline-block`}
+              >
+                <span
+                  className={`text-[10px] uppercase font-black tracking-widest ${sampleTranscript[activeSpeechIndex].color}`}
+                >
                   {sampleTranscript[activeSpeechIndex].speaker}
                 </span>
-                <span className="text-[10px] text-muted-foreground/40 ml-2 font-mono">{sampleTranscript[activeSpeechIndex].time}</span>
+                <span className="text-[10px] text-muted-foreground/40 ml-2 font-mono">
+                  {sampleTranscript[activeSpeechIndex].time}
+                </span>
               </div>
               <p className="text-[16px] text-foreground/80 leading-relaxed font-medium max-w-[480px]">
                 "{sampleTranscript[activeSpeechIndex].text}"
@@ -318,7 +348,7 @@ const SpeechToTextView = () => {
 
             <button
               disabled={activeSpeechIndex === sampleTranscript.length - 1}
-              onClick={() => setActiveSpeechIndex(prev => prev + 1)}
+              onClick={() => setActiveSpeechIndex((prev) => prev + 1)}
               className="w-10 h-10 rounded-full glass border border-glass flex items-center justify-center text-muted-foreground/40 hover:text-foreground disabled:opacity-20 transition-all"
             >
               <ChevronRight className="w-5 h-5" />
