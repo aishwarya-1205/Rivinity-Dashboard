@@ -36,7 +36,7 @@ const CanvasSidebar = ({ onClose }: CanvasSidebarProps) => {
             Rivinity
           </span>
         </div>
-        {/* Close button — shown on mobile so user can dismiss */}
+        {/* Close button */}
         {onClose && (
           <button
             onClick={onClose}

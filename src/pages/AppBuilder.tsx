@@ -15,7 +15,6 @@ const AppBuilder = () => {
 
   return (
     <div className="h-screen flex bg-background overflow-hidden relative">
-      {/* Mobile overlay backdrop for left sidebar */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
@@ -23,7 +22,6 @@ const AppBuilder = () => {
         />
       )}
 
-      {/* Mobile overlay backdrop for right panel */}
       {rightPanelOpen && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden animate-in fade-in duration-200"
@@ -53,7 +51,6 @@ const AppBuilder = () => {
           setRightPanelOpen={setRightPanelOpen}
         />
 
-        {/* Inner flex-1 for scrolling */}
         <div className="flex-1 min-h-0 relative">
           <AppBuilderMain />
         </div>

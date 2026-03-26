@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AppBuilder from "./pages/AppBuilder.tsx";
 import { FileProvider } from "./components/context/FileContext.tsx";
+import AudioLab from "./pages/AudioLab.tsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/app-builder" element={<AppBuilder />} />
+            <Route path="/audio-lab" element={<AudioLab />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -24,11 +24,10 @@
     --muted: 210 14% 95%;
     --muted-foreground: 0 0% 29%;
 
-    /* ✅ CORE COLORS */
+  
     --accent: 27 100% 55%;
     --highlight: 244 100% 69%;
 
-    /* ✅ GRADIENT SYSTEM (IMPORTANT) */
     --gradient-main: linear-gradient(135deg,
         hsl(var(--accent)),
         hsl(var(--highlight)));
@@ -42,7 +41,6 @@
 
     --radius: 0.75rem;
 
-    /* Glass */
     --glass-bg: 0 0% 100% / 0.6;
     --glass-bg-strong: 0 0% 100% / 0.85;
     --glass-bg-subtle: 0 0% 100% / 0.4;
@@ -60,13 +58,11 @@
   }
 
   .dark {
-    /* 🌌 BASE (INDIGO DARK) */
     --background: 230 35% 10%;
-    /* ~ #0f1224 */
+ 
     --foreground: 0 0% 96%;
 
     --card: 230 30% 14%;
-    /* slightly lighter */
     --card-foreground: 0 0% 96%;
 
     --popover: 230 30% 14%;
@@ -81,7 +77,7 @@
     --muted: 230 20% 18%;
     --muted-foreground: 220 10% 70%;
 
-    /* 🔥 KEEP YOUR BRAND COLORS */
+   
     --accent: 27 100% 55%;
     --highlight: 244 100% 69%;
 
@@ -89,7 +85,6 @@
     --input: 230 20% 22%;
     --ring: 27 100% 55%;
 
-    /* 🌫 Glass tuned for indigo */
     --glass-bg: 230 30% 14% / 0.6;
     --glass-bg-strong: 230 30% 16% / 0.85;
     --glass-bg-subtle: 230 25% 12% / 0.4;
@@ -103,9 +98,7 @@
   }
 }
 
-/* =========================
-   🌈 BACKGROUND (FIXED)
-   ========================= */
+
 
 @layer base {
   * {
@@ -141,9 +134,6 @@
   }
 }
 
-/* =========================
-   🎨 GRADIENT UTILITIES
-   ========================= */
 
 @layer utilities {
   .gradient-primary {
@@ -167,7 +157,7 @@
     -webkit-text-fill-color: transparent;
   }
 
-  /* Glass */
+
   .glass {
     background: hsl(var(--glass-bg));
     backdrop-filter: blur(16px);
@@ -218,7 +208,7 @@
   }
 }
 
-/* Animations */
+
 @keyframes float-in {
   from {
     opacity: 0;
