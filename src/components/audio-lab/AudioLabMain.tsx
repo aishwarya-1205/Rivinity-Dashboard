@@ -62,8 +62,8 @@ const AudioLabMain = ({ activeFeature, onFeatureChange }: Props) => {
             key={f.id}
             onClick={() => onFeatureChange(f.id)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 whitespace-nowrap ${activeFeature === f.id
-                ? "glass border border-glass shadow-float text-foreground"
-                : "text-muted-foreground/60 hover:text-foreground/80 hover:bg-accent/50"
+              ? "glass border border-glass shadow-float text-foreground"
+              : "text-muted-foreground/60 hover:text-foreground/80 hover:bg-accent/50"
               }`}
           >
             <f.icon className="w-4 h-4" />

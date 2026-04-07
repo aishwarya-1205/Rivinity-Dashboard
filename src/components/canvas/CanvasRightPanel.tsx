@@ -7,6 +7,7 @@ import {
   Shield,
   FolderOpen,
   AudioWaveform,
+  GraduationCap
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useFiles } from "../context/FileContext";
@@ -27,6 +28,7 @@ const tools = [
     color: "text-primary",
     route: "/audio-lab",
   },
+  { icon: GraduationCap, label: "RivinityLM", color: "text-primary", route: "/rivinity-lm" },
 ];
 
 interface CanvasRightPanelProps {
@@ -40,8 +42,8 @@ const CanvasRightPanel = ({ isOpen, onClose }: CanvasRightPanelProps) => {
   return (
     <aside
       className={`h-full flex-col py-5 px-3 shrink-0 flex gap-5 overflow-y-auto bg-background  lg:relative fixed top-0 right-0 z-40 shadow-2xl lg:shadow-none transition-all duration-300 ease-in-out ${isOpen
-          ? "translate-x-0 w-[220px] opacity-100"
-          : "translate-x-full lg:translate-x-0 lg:w-0 lg:px-0 lg:opacity-0 pointer-events-none lg:pointer-events-auto"
+        ? "translate-x-0 w-[220px] opacity-100"
+        : "translate-x-full lg:translate-x-0 lg:w-0 lg:px-0 lg:opacity-0 pointer-events-none lg:pointer-events-auto"
         }`}
     >
       <div>
