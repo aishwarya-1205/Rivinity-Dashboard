@@ -20,6 +20,8 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
+  Volume2,
+  Pencil,
 } from "lucide-react";
 
 interface Message {
@@ -91,22 +93,54 @@ const MessageActions = ({ content }: { content: string }) => {
         )}
       </button>
       <button
+        title="Good response"
         onClick={() => setLiked(liked === "up" ? null : "up")}
         className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "up" ? "text-primary bg-primary/10" : "text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50"}`}
       >
         <ThumbsUp className="w-3.5 h-3.5" />
       </button>
       <button
+        title="Bad response"
         onClick={() => setLiked(liked === "down" ? null : "down")}
         className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "down" ? "text-red-400 bg-red-400/10" : "text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50"}`}
       >
         <ThumbsDown className="w-3.5 h-3.5" />
       </button>
-      <button className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Share" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+        <Share2 className="w-3.5 h-3.5" />
+      </button>
+      <button title="Regenerate" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
         <RotateCcw className="w-3.5 h-3.5" />
       </button>
-      <button className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
-        <Share2 className="w-3.5 h-3.5" />
+      <button title="Read aloud" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+        <Volume2 className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+};
+
+const UserMessageActions = ({ content }: { content: string }) => {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(content);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+  return (
+    <div className="flex items-center gap-0.5 mt-1.5 mr-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+      <button title="Edit" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+        <Pencil className="w-3.5 h-3.5" />
+      </button>
+      <button
+        onClick={copy}
+        title="Copy"
+        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all"
+      >
+        {copied ? (
+          <Check className="w-3.5 h-3.5 text-green-500" />
+        ) : (
+          <Copy className="w-3.5 h-3.5" />
+        )}
       </button>
     </div>
   );
@@ -432,7 +466,7 @@ const CanvasMain = () => {
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`animate-float-in flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
+                className={`group animate-float-in flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
               >
                 <div
                   className={`max-w-[85%] sm:max-w-[75%] px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-[14px] leading-relaxed ${msg.role === "user" ? "rounded-2xl rounded-br-lg gradient-accent text-primary-foreground" : "rounded-2xl rounded-bl-lg glass border border-glass text-foreground/80"}`}
@@ -440,6 +474,7 @@ const CanvasMain = () => {
                   {msg.content}
                 </div>
                 {msg.role === "ai" && <MessageActions content={msg.content} />}
+                {msg.role === "user" && <UserMessageActions content={msg.content} />}
               </div>
             ))}
           </div>

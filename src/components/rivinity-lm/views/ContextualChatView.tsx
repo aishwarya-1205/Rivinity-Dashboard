@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Send, Paperclip, Sparkles, Loader2, BookOpen, Lightbulb, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
+import { Send, Paperclip, Sparkles, Loader2, BookOpen, Lightbulb, Copy, ThumbsUp, ThumbsDown, Volume2, Share2, RotateCcw, Pencil, Check } from "lucide-react";
 
 interface Message {
   id: number;
@@ -19,6 +19,13 @@ const ContextualChatView = () => {
     },
   ]);
   const [input, setInput] = useState("");
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+
+  const copy = (text: string, id: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 1500);
+  };
 
   const handleSend = () => {
     if (!input.trim()) return;
@@ -58,7 +65,7 @@ const ContextualChatView = () => {
         {/* Chat Area */}
         <div className="flex-1 overflow-y-auto space-y-4 pr-4">
           {messages.map((msg) => (
-            <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+            <div key={msg.id} className={`group flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[85%] ${msg.role === "user"
                 ? "rounded-2xl rounded-br-lg gradient-accent text-primary-foreground px-5 py-3"
                 : "rounded-2xl rounded-bl-lg glass border border-glass px-5 py-4"
@@ -72,15 +79,34 @@ const ContextualChatView = () => {
                   <>
                     <div className="text-[14px] leading-relaxed whitespace-pre-wrap">{msg.content}</div>
                     {msg.role === "ai" && !msg.thinking && (
-                      <div className="flex items-center gap-1 mt-3 pt-3 border-t border-glass">
-                        <button className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors text-muted-foreground/40 hover:text-muted-foreground/70">
-                          <Copy className="w-3.5 h-3.5" />
+                      <div className="flex items-center gap-1 mt-3 pt-3 border-t border-glass text-muted-foreground/40">
+                        <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                          {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
                         </button>
-                        <button className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors text-muted-foreground/40 hover:text-muted-foreground/70">
+                        <button title="Good response" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
                           <ThumbsUp className="w-3.5 h-3.5" />
                         </button>
-                        <button className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors text-muted-foreground/40 hover:text-muted-foreground/70">
+                        <button title="Bad response" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
                           <ThumbsDown className="w-3.5 h-3.5" />
+                        </button>
+                        <button title="Share" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                          <Share2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button title="Regenerate" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                          <RotateCcw className="w-3.5 h-3.5" />
+                        </button>
+                        <button title="Read aloud" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                          <Volume2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    )}
+                    {msg.role === "user" && (
+                      <div className="flex items-center gap-1 mt-2 justify-end opacity-0 group-hover:opacity-100 transition-opacity text-primary-foreground/60">
+                        <button title="Edit" className="p-1 rounded-md hover:bg-white/10 transition-colors hover:text-primary-foreground">
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1 rounded-md hover:bg-white/10 transition-colors hover:text-primary-foreground">
+                          {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                         </button>
                       </div>
                     )}

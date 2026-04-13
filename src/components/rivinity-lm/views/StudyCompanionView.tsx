@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Bot, Send, Sparkles, Target, Flame, Trophy, BookOpen, Brain } from "lucide-react";
+import { Bot, Send, Sparkles, Target, Flame, Trophy, BookOpen, Brain, Copy, ThumbsUp, ThumbsDown, Share2, RotateCcw, Volume2, Pencil, Check } from "lucide-react";
 
 interface Message {
   id: number;
@@ -12,6 +12,14 @@ const StudyCompanionView = () => {
     { id: 1, role: "ai", content: "Hey! 👋 I'm your study companion. I'll help you stay focused, understand concepts, and track your progress. What are you studying today?" },
   ]);
   const [input, setInput] = useState("");
+  const [copiedId, setCopiedId] = useState<number | null>(null);
+
+  const copy = (text: string, id: number) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 1500);
+  };
+  
   const [streak, setStreak] = useState(7);
   const [level, setLevel] = useState(12);
 
@@ -43,12 +51,46 @@ const StudyCompanionView = () => {
 
         <div className="flex-1 overflow-y-auto space-y-3 mb-4">
           {messages.map(msg => (
-            <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[80%] px-4 py-3 text-[13px] leading-relaxed ${
+            <div key={msg.id} className={`group flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
+                <div className={`max-w-[100%] px-4 py-3 text-[13px] leading-relaxed ${
                 msg.role === "user"
                   ? "rounded-2xl rounded-br-lg gradient-accent text-primary-foreground"
                   : "rounded-2xl rounded-bl-lg glass border border-glass text-foreground/75"
               }`}>{msg.content}</div>
+                {msg.role === "ai" && (
+                  <div className="flex items-center gap-1 mt-1 ml-1 text-muted-foreground/40">
+                    <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                      {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
+                    <button title="Good response" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                      <ThumbsUp className="w-3.5 h-3.5" />
+                    </button>
+                    <button title="Bad response" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                      <ThumbsDown className="w-3.5 h-3.5" />
+                    </button>
+                    <button title="Share" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                      <Share2 className="w-3.5 h-3.5" />
+                    </button>
+                    <button title="Regenerate" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                      <RotateCcw className="w-3.5 h-3.5" />
+                    </button>
+                    <button title="Read aloud" className="p-1.5 rounded-lg hover:bg-accent/50 transition-colors hover:text-muted-foreground/70">
+                      <Volume2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
+                {msg.role === "user" && (
+                  <div className="flex items-center gap-1 mt-1 mr-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity text-primary-foreground/60">
+                    <button title="Edit" className="p-1 rounded-md hover:bg-accent/20 transition-colors hover:text-primary-foreground">
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1 rounded-md hover:bg-accent/20 transition-colors hover:text-primary-foreground">
+                      {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
         </div>
