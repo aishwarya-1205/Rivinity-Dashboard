@@ -3,7 +3,7 @@ import {
   Send, Paperclip, Mic, Sparkles, ChevronDown, Plus, X,
   MessageSquare, StickyNote, Layers, HelpCircle, Podcast,
   FileAudio, CalendarCheck, GraduationCap, Swords, Bot, BarChart3,
-  BookOpen, Beaker, Globe, Code, Lightbulb, Search, Check
+  BookOpen, Beaker, Globe, Code, Lightbulb, Search, Check, ChevronLeft, ChevronRight
 } from "lucide-react";
 import ContextualChatView from "./views/ContextualChatView";
 import SmartNotesView from "./views/SmartNotesView";
@@ -43,27 +43,113 @@ const defaultTabs: Tab[] = [
   { id: 3, icon: Globe, label: "Explore Topics" },
 ];
 
-const allTemplates = [
-  { icon: Search, label: "Research", desc: "Search and analyze scholarly papers" },
-  { icon: Code, label: "Problem Set", desc: "Solve math and programming questions" },
-  { icon: Lightbulb, label: "Brainstorm", desc: "Generate essay ideas and outlines" },
-  { icon: BookOpen, label: "Reading", desc: "Smart summaries & reading comprehension" },
-];
-
-const suggestions = [
-  { icon: BookOpen, label: "Explain a concept" },
-  { icon: Beaker, label: "Science help" },
-  { icon: Code, label: "Math solver" },
-  { icon: Lightbulb, label: "Essay ideas" },
-  { icon: Globe, label: "History deep-dive" },
-];
-
 const topicCards = [
-  { title: "Mathematics", desc: "Algebra, Calculus, Statistics & more", gradient: "from-primary to-accent-pink" },
-  { title: "Science", desc: "Physics, Chemistry, Biology", gradient: "from-secondary to-accent-purple" },
-  { title: "English", desc: "Literature, Grammar, Writing", gradient: "from-accent-pink to-primary" },
-  { title: "History", desc: "World History, Civilizations", gradient: "from-accent-purple to-secondary" },
+  { icon: Code, title: "Computer Science", desc: "Algorithms & Systems" },
+  { icon: Lightbulb, title: "Philosophy", desc: "Ethics & Logic" },
+  { icon: BookOpen, title: "Literature", desc: "Analysis & History" },
+  { icon: Globe, title: "World History", desc: "Events & Cultures" },
 ];
+
+const TopicCardsCarousel = ({
+  cards,
+  onSelect,
+  textareaRef,
+}: {
+  cards: { icon: React.ElementType; title: string; desc: string }[];
+  onSelect: (val: string) => void;
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
+}) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [isMoved, setIsMoved] = useState(false);
+  const isDragging = useRef(false);
+  const startX = useRef(0);
+  const scrollLeftRef = useRef(0);
+
+  const scroll = (direction: "left" | "right") => {
+    if (trackRef.current) {
+      const scrollAmount = 300;
+      trackRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (!trackRef.current) return;
+    isDragging.current = true;
+    setIsMoved(false);
+    startX.current = e.pageX - trackRef.current.offsetLeft;
+    scrollLeftRef.current = trackRef.current.scrollLeft;
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !trackRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - trackRef.current.offsetLeft;
+    const delta = x - startX.current;
+    if (Math.abs(delta) > 4) setIsMoved(true);
+    trackRef.current.scrollLeft = scrollLeftRef.current - delta;
+  };
+  const stopDrag = () => {
+    isDragging.current = false;
+  };
+
+  return (
+    <div className="w-full relative group">
+      <button
+        onClick={() => scroll("left")}
+        className="absolute left-[-20px] top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-glass flex items-center justify-center text-muted-foreground/40 hover:text-foreground opacity-0 group-hover:opacity-100 transition-all shadow-md"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+
+      <div
+        ref={trackRef}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={stopDrag}
+        onMouseLeave={stopDrag}
+        className="flex gap-2 overflow-x-auto cursor-grab active:cursor-grabbing select-none no-scrollbar"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        } as React.CSSProperties}
+      >
+        {cards.map((c, i) => (
+          <button
+            key={`${c.title}-${i}`}
+            onClick={() => {
+              if (!isMoved) {
+                onSelect(c.desc);
+                setTimeout(() => textareaRef.current?.focus(), 0);
+              }
+            }}
+            className="shrink-0 text-left p-3 rounded-xl glass border border-glass hover:border-glass-hover transition-all duration-200 group flex flex-col items-start gap-2"
+            style={{ width: "clamp(160px, 42vw, 220px)" }}
+          >
+            <c.icon className="w-4 h-4 text-primary/70 group-hover:text-primary transition-colors" />
+            <div>
+              <p className="text-[12.5px] font-medium text-foreground/80">
+                {c.title}
+              </p>
+              <p className="text-[11px] text-muted-foreground/50 mt-0.5 leading-relaxed">
+                {c.desc}
+              </p>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <button
+        onClick={() => scroll("right")}
+        className="absolute right-[-20px] top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full glass border border-glass flex items-center justify-center text-muted-foreground/40 hover:text-foreground opacity-0 group-hover:opacity-100 transition-all shadow-md"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
+    </div>
+  );
+};
 
 interface Props {
   activeFeature: string;
@@ -78,23 +164,9 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
   const [responseLength, setResponseLength] = useState("Medium");
   const [showPromptDropdown, setShowPromptDropdown] = useState(false);
   const [showLengthDropdown, setShowLengthDropdown] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isAddingTab, setIsAddingTab] = useState(false);
+  const [newTabName, setNewTabName] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const openLabels = new Set(tabs.map((t) => t.label));
-
-  const selectTemplate = (t: (typeof allTemplates)[0]) => {
-    setDropdownOpen(false);
-    const existing = tabs.find((tab) => tab.label === t.label);
-    if (existing) {
-      setActiveTab(existing.id);
-      return;
-    }
-    const newTab: Tab = { id: Date.now(), icon: t.icon, label: t.label };
-    setTabs(prev => [...prev, newTab]);
-    setActiveTab(newTab.id);
-    setTimeout(() => textareaRef.current?.focus(), 50);
-  };
 
   const closeTab = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -179,7 +251,7 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                   {tabs.map((tab) => (
                     <button
                       key={tab.id}
-                      onClick={() => { setActiveTab(tab.id); setDropdownOpen(false); }}
+                      onClick={() => setActiveTab(tab.id)}
                       className={`group relative flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium transition-all duration-150 shrink-0 ${activeTab === tab.id
                         ? "bg-muted/60 text-foreground"
                         : "text-muted-foreground/50 hover:text-muted-foreground hover:bg-muted/60"
@@ -195,82 +267,45 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                       )}
                     </button>
                   ))}
-                  <button 
-                    onClick={() => setDropdownOpen(v => !v)} 
-                    className={`px-3 py-2 flex items-center gap-1 text-[12px] font-medium transition-all shrink-0 ${
-                      dropdownOpen
-                        ? "text-primary bg-primary/8"
-                        : "text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60"
-                    }`}
-                  >
-                    <Plus 
-                      className="w-3 h-3 transition-transform duration-200" 
-                      style={{
-                        transform: dropdownOpen ? "rotate(45deg)" : "rotate(0deg)",
-                      }}
-                    />
-                  </button>
+                  {isAddingTab ? (
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-muted/60 text-foreground shrink-0 border border-border/40">
+                      <Plus className="w-3 h-3 shrink-0" />
+                      <input 
+                        autoFocus
+                        value={newTabName}
+                        onChange={(e) => setNewTabName(e.target.value)}
+                        onBlur={() => {
+                          if (newTabName.trim()) {
+                            const tab = { id: Date.now(), icon: Plus, label: newTabName.trim() };
+                            setTabs(p => [...p, tab]);
+                            setActiveTab(tab.id);
+                          }
+                          setIsAddingTab(false);
+                          setNewTabName("");
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.currentTarget.blur();
+                          } else if (e.key === "Escape") {
+                            setIsAddingTab(false);
+                            setNewTabName("");
+                          }
+                        }}
+                        className="bg-transparent border-none outline-none focus:outline-none w-24 text-foreground placeholder:text-muted-foreground/40"
+                        placeholder="Tab name..."
+                      />
+                    </div>
+                  ) : (
+                    <button 
+                      onClick={() => setIsAddingTab(true)} 
+                      className="px-3 py-2 flex items-center gap-1 text-[12px] font-medium transition-all shrink-0 text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60"
+                    >
+                      <Plus className="w-3 h-3 transition-transform duration-200" />
+                    </button>
+                  )}
                 </div>
 
-                {/* Inline workspace picker */}
-                <div
-                  style={{
-                    maxHeight: dropdownOpen ? 320 : 0,
-                    opacity: dropdownOpen ? 1 : 0,
-                    overflowY: dropdownOpen ? "auto" : "hidden",
-                    overflowX: "hidden",
-                    scrollbarWidth: "none",
-                    transition:
-                      "max-height 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.18s ease",
-                  } as React.CSSProperties}
-                >
-                  <div className="px-3 pt-3 pb-1">
-                    <p className="text-[10px] font-semibold text-muted-foreground/40 uppercase tracking-widest mb-2">
-                      Open mode
-                    </p>
-                    <div className="grid grid-cols-1 gap-0.5">
-                      {allTemplates.map((t) => {
-                        const isActive =
-                          tabs.find((tab) => tab.label === t.label)?.id === activeTab;
-                        const isOpen = openLabels.has(t.label);
-                        return (
-                          <button
-                            key={t.label}
-                            onClick={() => selectTemplate(t)}
-                            className={`w-full flex items-center gap-3 px-2.5 py-2 rounded-xl text-left transition-all duration-100 ${
-                              isActive
-                                ? "bg-primary/8 text-primary"
-                                : "hover:bg-muted/60 text-foreground/80"
-                            }`}
-                          >
-                            <div
-                              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all ${isActive ? "gradient-accent" : "bg-muted/50"}`}
-                            >
-                              <t.icon
-                                className={`w-3.5 h-3.5 ${isActive ? "text-primary-foreground" : "text-muted-foreground/60"}`}
-                              />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-[12.5px] font-medium leading-tight">
-                                {t.label}
-                              </p>
-                              <p className="text-[10.5px] text-muted-foreground/45 mt-0.5 truncate">
-                                {t.desc}
-                              </p>
-                            </div>
-                            {isActive && (
-                              <Check className="w-3.5 h-3.5 text-primary shrink-0" />
-                            )}
-                            {isOpen && !isActive && (
-                              <div className="w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div className="mx-3 mt-2 mb-0 h-px bg-border/40" />
-                </div>
+
 
                 <textarea
                   ref={textareaRef}
@@ -281,7 +316,6 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                       e.preventDefault(); 
                       handleSend(); 
                     }
-                    if (e.key === "Escape") setDropdownOpen(false);
                   }}
                   placeholder="Ask me to teach you anything..."
                   rows={2}
@@ -360,34 +394,17 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                   </button>
                 </div>
               </div>
-            </div>
-
-            {/* Suggestion chips */}
-            <div className="flex gap-2 flex-wrap justify-center mb-5">
-              {suggestions.map((s) => (
-                <button key={s.label} onClick={() => setInput(s.label)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted hover:bg-muted/80 transition-colors text-[12px] text-muted-foreground font-medium"
-                >
-                  <s.icon className="w-3 h-3" />{s.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Explore Topics */}
-            <div className="w-full max-w-[700px]">
-              <p className="text-[10px] text-muted-foreground/40 uppercase tracking-widest text-center mb-3">Explore Topics</p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                {topicCards.map((t) => (
-                  <button key={t.title} onClick={() => { setInput(`Teach me about ${t.title}`); }}
-                    className="group relative overflow-hidden rounded-2xl p-4 glass border border-glass border-glass-hover transition-all duration-300 hover:shadow-float text-left"
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${t.gradient} opacity-[0.06] group-hover:opacity-[0.12] transition-opacity`} />
-                    <p className="text-[13px] font-semibold text-foreground/80 relative">{t.title}</p>
-                    <p className="text-[10.5px] text-muted-foreground/50 mt-1 relative leading-relaxed line-clamp-2">{t.desc}</p>
-                  </button>
-                ))}
+              
+              <div className="w-full mt-4">
+                <TopicCardsCarousel
+                  cards={topicCards}
+                  onSelect={setInput}
+                  textareaRef={textareaRef}
+                />
               </div>
             </div>
+
+
 
           </div>
 

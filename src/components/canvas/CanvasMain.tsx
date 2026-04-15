@@ -440,9 +440,7 @@ const CanvasMain = () => {
               </h1>
               <div className="h-0.5 w-12 rounded-full gradient-accent mt-3 mb-4 sm:mb-5" />
               <div className="w-full mb-4">{inputArea}</div>
-              <div className="w-full mb-3">
-                <SuggestionsCarousel suggestions={suggestions} />
-              </div>
+
               <div className="w-full">
                 <QuickCardsCarousel
                   cards={quickCards}

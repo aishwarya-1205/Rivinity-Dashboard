@@ -152,16 +152,16 @@ const TextToSpeechView = () => {
 
               {/* Action buttons */}
               <div className="flex items-center gap-1">
-                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:bg-red-500/10 hover:text-red-500 transition-all">
                   <ThumbsUp className="w-3.5 h-3.5" />
                 </button>
-                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:bg-red-500/10 hover:text-red-500 transition-all">
                   <ThumbsDown className="w-3.5 h-3.5" />
                 </button>
-                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:bg-red-500/10 hover:text-red-500 transition-all">
                   <Download className="w-3.5 h-3.5" />
                 </button>
-                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+                <button className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:bg-red-500/10 hover:text-red-500 transition-all">
                   <Share2 className="w-3.5 h-3.5" />
                 </button>
               </div>

@@ -26,6 +26,8 @@ import {
   ChevronRight,
   Volume2,
   Pencil,
+  FileText,
+  Lightbulb,
 } from "lucide-react";
 
 interface Message {
@@ -57,31 +59,7 @@ const allTemplates = [
   { icon: Code2, label: "API Builder", desc: "REST / GraphQL endpoints" },
 ];
 
-const suggestions = [
-  { icon: Code2, label: "Write code" },
-  { icon: Layout, label: "Build UI" },
-  { icon: Globe, label: "Deploy" },
-  { icon: Palette, label: "Design" },
-  { icon: Rocket, label: "Launch" },
-];
 
-const quickCards = [
-  {
-    icon: Code2,
-    title: "Build a landing page",
-    desc: "Create a conversion-focused landing page with hero, features, and CTA",
-  },
-  {
-    icon: Layout,
-    title: "Design a dashboard",
-    desc: "Generate clean admin panels with charts, tables, and analytics",
-  },
-  {
-    icon: Rocket,
-    title: "Launch a SaaS product",
-    desc: "Full-stack SaaS with auth, billing, dashboard, and API integration",
-  },
-];
 
 const MessageActions = ({ content }: { content: string }) => {
   const [copied, setCopied] = useState(false);
@@ -96,7 +74,7 @@ const MessageActions = ({ content }: { content: string }) => {
       <button
         onClick={copy}
         title="Copy"
-        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all"
+        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all"
       >
         {copied ? (
           <Check className="w-3.5 h-3.5 text-green-500" />
@@ -107,24 +85,24 @@ const MessageActions = ({ content }: { content: string }) => {
       <button
         title="Good response"
         onClick={() => setLiked(liked === "up" ? null : "up")}
-        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "up" ? "text-primary bg-primary/10" : "text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50"}`}
+        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "up" ? "text-primary bg-primary/10" : "text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10"}`}
       >
         <ThumbsUp className="w-3.5 h-3.5" />
       </button>
       <button
         title="Bad response"
         onClick={() => setLiked(liked === "down" ? null : "down")}
-        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "down" ? "text-red-400 bg-red-400/10" : "text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50"}`}
+        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "down" ? "text-red-400 bg-red-400/10" : "text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10"}`}
       >
         <ThumbsDown className="w-3.5 h-3.5" />
       </button>
-      <button title="Share" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Share" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <Share2 className="w-3.5 h-3.5" />
       </button>
-      <button title="Regenerate" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Regenerate" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <RotateCcw className="w-3.5 h-3.5" />
       </button>
-      <button title="Read aloud" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Read aloud" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <Volume2 className="w-3.5 h-3.5" />
       </button>
     </div>
@@ -140,13 +118,13 @@ const UserMessageActions = ({ content }: { content: string }) => {
   };
   return (
     <div className="flex items-center gap-0.5 mt-1.5 mr-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-      <button title="Edit" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Edit" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <Pencil className="w-3.5 h-3.5" />
       </button>
       <button
         onClick={copy}
         title="Copy"
-        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all"
+        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all"
       >
         {copied ? (
           <Check className="w-3.5 h-3.5 text-green-500" />
@@ -158,65 +136,23 @@ const UserMessageActions = ({ content }: { content: string }) => {
   );
 };
 
-const SuggestionsCarousel = ({
-  suggestions,
-}: {
-  suggestions: { icon: React.ElementType; label: string }[];
-}) => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 200;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  return (
-    <div className="w-full relative group">
-      <button
-        onClick={() => scroll("left")}
-        className="absolute left-[-15px] top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full glass border border-glass flex items-center justify-center text-muted-foreground/40 hover:text-foreground opacity-0 group-hover:opacity-100 transition-all shadow-sm"
-      >
-        <ChevronLeft className="w-4 h-4" />
-      </button>
-      
-      <div
-        ref={scrollRef}
-        className="flex gap-1.5 overflow-x-auto px-2 justify-center no-scrollbar"
-        style={
-          {
-            scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-          } as React.CSSProperties
-        }
-      >
-        {suggestions.map((s) => (
-          <button
-            key={s.label}
-            style={{ scrollSnapAlign: "center" }}
-            className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-muted hover:bg-muted/80 transition-colors text-[11.5px] text-muted-foreground font-medium"
-          >
-            <s.icon className="w-3 h-3" />
-            {s.label}
-          </button>
-        ))}
-      </div>
-
-      <button
-        onClick={() => scroll("right")}
-        className="absolute right-[-15px] top-1/2 -translate-y-1/2 z-20 w-8 h-8 rounded-full glass border border-glass flex items-center justify-center text-muted-foreground/40 hover:text-foreground opacity-0 group-hover:opacity-100 transition-all shadow-sm"
-      >
-        <ChevronRight className="w-4 h-4" />
-      </button>
-    </div>
-  );
-};
+const quickCards = [
+  {
+    icon: Code2,
+    title: "Build an API",
+    desc: "RESTful endpoint with auth and validation",
+  },
+  {
+    icon: FileText,
+    title: "Write docs",
+    desc: "Clean technical docs for any codebase",
+  },
+  {
+    icon: Lightbulb,
+    title: "Architect a system",
+    desc: "Scalable patterns and data models",
+  },
+];
 
 const QuickCardsCarousel = ({
   cards,
@@ -278,13 +214,11 @@ const QuickCardsCarousel = ({
         onMouseUp={stopDrag}
         onMouseLeave={stopDrag}
         className="flex gap-2 overflow-x-auto cursor-grab active:cursor-grabbing select-none no-scrollbar"
-        style={
-          {
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            WebkitOverflowScrolling: "touch",
-          } as React.CSSProperties
-        }
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+        } as React.CSSProperties}
       >
         {cards.map((c, i) => (
           <button
@@ -321,28 +255,17 @@ const QuickCardsCarousel = ({
   );
 };
 
+
 const AppBuilderMain = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [tabs, setTabs] = useState<Tab[]>(defaultTabs);
   const [activeTab, setActiveTab] = useState(defaultTabs[0].id);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isAddingTab, setIsAddingTab] = useState(false);
+  const [newTabName, setNewTabName] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const openLabels = new Set(tabs.map((t) => t.label));
-
-  const selectTemplate = (t: (typeof allTemplates)[0]) => {
-    setDropdownOpen(false);
-    const existing = tabs.find((tab) => tab.label === t.label);
-    if (existing) {
-      setActiveTab(existing.id);
-      return;
-    }
-    const newTab: Tab = { id: Date.now(), icon: t.icon, label: t.label };
-    setTabs((p) => [...p, newTab]);
-    setActiveTab(newTab.id);
-    setTimeout(() => textareaRef.current?.focus(), 50);
-  };
 
   const closeTab = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -355,7 +278,6 @@ const AppBuilderMain = () => {
   const handleSend = useCallback(() => {
     const text = input.trim();
     if (!text) return;
-    setDropdownOpen(false);
     setMessages((p) => [...p, { id: Date.now(), role: "user", content: text }]);
     setInput("");
     setTimeout(() => textareaRef.current?.focus(), 50);
@@ -390,10 +312,7 @@ const AppBuilderMain = () => {
           {tabs.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id);
-                setDropdownOpen(false);
-              }}
+              onClick={() => setActiveTab(tab.id)}
               className={`group relative flex items-center gap-1.5 px-3 py-2 text-[12px] font-medium transition-all duration-150 shrink-0 ${
                 activeTab === tab.id
                   ? "bg-muted/60 text-foreground"
@@ -412,84 +331,45 @@ const AppBuilderMain = () => {
               )}
             </button>
           ))}
-          <button
-            onClick={() => setDropdownOpen((v) => !v)}
-            className={`px-3 py-2 flex items-center gap-1 text-[12px] font-medium transition-all shrink-0 ${
-              dropdownOpen
-                ? "text-primary bg-primary/8"
-                : "text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60"
-            }`}
-          >
-            <Plus
-              className="w-3 h-3 transition-transform duration-200"
-              style={{
-                transform: dropdownOpen ? "rotate(45deg)" : "rotate(0deg)",
-              }}
-            />
-          </button>
+          {isAddingTab ? (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-muted/60 text-foreground shrink-0 border border-border/40">
+              <Plus className="w-3 h-3 shrink-0" />
+              <input
+                autoFocus
+                value={newTabName}
+                onChange={(e) => setNewTabName(e.target.value)}
+                onBlur={() => {
+                  if (newTabName.trim()) {
+                    const tab = { id: Date.now(), icon: Plus, label: newTabName.trim() };
+                    setTabs(p => [...p, tab]);
+                    setActiveTab(tab.id);
+                  }
+                  setIsAddingTab(false);
+                  setNewTabName("");
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.currentTarget.blur();
+                  } else if (e.key === "Escape") {
+                    setIsAddingTab(false);
+                    setNewTabName("");
+                  }
+                }}
+                className="bg-transparent border-none outline-none focus:outline-none w-24 text-foreground placeholder:text-muted-foreground/40"
+                placeholder="Tab name..."
+              />
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAddingTab(true)}
+              className="px-2 py-1.5 text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60 rounded-lg transition-all shrink-0"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          )}
         </div>
 
-        {/* Inline workspace picker */}
-        <div
-          style={
-            {
-              maxHeight: dropdownOpen ? 320 : 0,
-              opacity: dropdownOpen ? 1 : 0,
-              overflowY: dropdownOpen ? "auto" : "hidden",
-              overflowX: "hidden",
-              scrollbarWidth: "none",
-              transition:
-                "max-height 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.18s ease",
-            } as React.CSSProperties
-          }
-        >
-          <div className="px-3 pt-3 pb-1">
-            <p className="text-[10px] font-semibold text-muted-foreground/40 uppercase tracking-widest mb-2">
-              Open workspace
-            </p>
-            <div className="grid grid-cols-1 gap-0.5">
-              {allTemplates.map((t) => {
-                const isActive =
-                  tabs.find((tab) => tab.label === t.label)?.id === activeTab;
-                const isOpen = openLabels.has(t.label);
-                return (
-                  <button
-                    key={t.label}
-                    onClick={() => selectTemplate(t)}
-                    className={`w-full flex items-center gap-3 px-2.5 py-2 rounded-xl text-left transition-all duration-100 ${
-                      isActive
-                        ? "bg-primary/8 text-primary"
-                        : "hover:bg-muted/60 text-foreground/80"
-                    }`}
-                  >
-                    <div
-                      className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-all ${isActive ? "gradient-accent" : "bg-muted/50"}`}
-                    >
-                      <t.icon
-                        className={`w-3.5 h-3.5 ${isActive ? "text-primary-foreground" : "text-muted-foreground/60"}`}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[12.5px] font-medium leading-tight">
-                        {t.label}
-                      </p>
-                      <p className="text-[10.5px] text-muted-foreground/45 mt-0.5 truncate">
-                        {t.desc}
-                      </p>
-                    </div>
-                    {isActive && (
-                      <Check className="w-3.5 h-3.5 text-primary shrink-0" />
-                    )}
-                    {isOpen && !isActive && (
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          <div className="mx-3 mt-2 mb-0 h-px bg-border/40" />
-        </div>
+
 
         {/* Textarea */}
         <textarea
@@ -501,7 +381,6 @@ const AppBuilderMain = () => {
               e.preventDefault();
               handleSend();
             }
-            if (e.key === "Escape") setDropdownOpen(false);
           }}
           placeholder="Curious? Ask and dive into building insights"
           rows={2}
@@ -559,9 +438,6 @@ const AppBuilderMain = () => {
               </h1>
               <div className="h-0.5 w-12 rounded-full gradient-accent mt-3 mb-4 sm:mb-5" />
               <div className="w-full mb-4">{inputArea}</div>
-              <div className="w-full mb-3">
-                <SuggestionsCarousel suggestions={suggestions} />
-              </div>
               <div className="w-full">
                 <QuickCardsCarousel
                   cards={quickCards}
@@ -588,11 +464,10 @@ const AppBuilderMain = () => {
                 className={`group animate-float-in flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}
               >
                 <div
-                  className={`max-w-[85%] sm:max-w-[75%] px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-[14px] leading-relaxed ${
-                    msg.role === "user"
-                      ? "rounded-2xl rounded-br-lg gradient-accent text-primary-foreground"
-                      : "rounded-2xl rounded-bl-lg glass border border-glass text-foreground/80"
-                  }`}
+                  className={`max-w-[85%] sm:max-w-[75%] px-3 sm:px-4 py-2.5 sm:py-3 text-[13px] sm:text-[14px] leading-relaxed ${msg.role === "user"
+                    ? "rounded-2xl rounded-br-lg gradient-accent text-primary-foreground"
+                    : "rounded-2xl rounded-bl-lg glass border border-glass text-foreground/80"
+                    }`}
                 >
                   {msg.content}
                 </div>
