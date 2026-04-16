@@ -156,6 +156,21 @@ interface Props {
   onFeatureChange: (id: string) => void;
 }
 
+const getTabIcon = (label: string) => {
+  const l = label.toLowerCase();
+  if (l.includes("code") || l.includes("dev") || l.includes("program") || l.includes("soft")) return Code;
+  if (l.includes("math") || l.includes("calc") || l.includes("stat")) return BarChart3;
+  if (l.includes("science") || l.includes("chem") || l.includes("phys") || l.includes("bio")) return Beaker;
+  if (l.includes("history") || l.includes("world") || l.includes("geo")) return Globe;
+  if (l.includes("lit") || l.includes("book") || l.includes("read") || l.includes("write")) return BookOpen;
+  if (l.includes("phil") || l.includes("logic") || l.includes("idea")) return Lightbulb;
+  if (l.includes("study") || l.includes("learn") || l.includes("school")) return GraduationCap;
+  if (l.includes("chat") || l.includes("talk") || l.includes("ask")) return MessageSquare;
+  if (l.includes("note") || l.includes("write") || l.includes("draft")) return StickyNote;
+  if (l.includes("exam") || l.includes("quiz") || l.includes("test")) return HelpCircle;
+  return Search;
+};
+
 const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
   const [input, setInput] = useState("");
   const [tabs, setTabs] = useState<Tab[]>(defaultTabs);
@@ -276,7 +291,8 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                         onChange={(e) => setNewTabName(e.target.value)}
                         onBlur={() => {
                           if (newTabName.trim()) {
-                            const tab = { id: Date.now(), icon: Plus, label: newTabName.trim() };
+                            const tabName = newTabName.trim();
+                            const tab = { id: Date.now(), icon: getTabIcon(tabName), label: tabName };
                             setTabs(p => [...p, tab]);
                             setActiveTab(tab.id);
                           }

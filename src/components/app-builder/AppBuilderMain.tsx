@@ -256,6 +256,21 @@ const QuickCardsCarousel = ({
 };
 
 
+const getTabIcon = (label: string) => {
+  const l = label.toLowerCase();
+  if (l.includes("app") || l.includes("mobile") || l.includes("phone")) return Smartphone;
+  if (l.includes("web") || l.includes("site") || l.includes("page")) return Globe;
+  if (l.includes("api") || l.includes("code") || l.includes("back") || l.includes("server")) return Code2;
+  if (l.includes("dash") || l.includes("admin") || l.includes("panel")) return Monitor;
+  if (l.includes("saas") || l.includes("platform")) return Layers;
+  if (l.includes("ui") || l.includes("comp") || l.includes("front")) return Component;
+  if (l.includes("design") || l.includes("style") || l.includes("color")) return Palette;
+  if (l.includes("launch") || l.includes("deploy") || l.includes("start")) return Rocket;
+  if (l.includes("doc") || l.includes("text") || l.includes("file") || l.includes("read")) return FileText;
+  if (l.includes("idea") || l.includes("plan") || l.includes("think") || l.includes("brain")) return Lightbulb;
+  return Layout;
+};
+
 const AppBuilderMain = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -340,7 +355,8 @@ const AppBuilderMain = () => {
                 onChange={(e) => setNewTabName(e.target.value)}
                 onBlur={() => {
                   if (newTabName.trim()) {
-                    const tab = { id: Date.now(), icon: Plus, label: newTabName.trim() };
+                    const tabName = newTabName.trim();
+                    const tab = { id: Date.now(), icon: getTabIcon(tabName), label: tabName };
                     setTabs(p => [...p, tab]);
                     setActiveTab(tab.id);
                   }

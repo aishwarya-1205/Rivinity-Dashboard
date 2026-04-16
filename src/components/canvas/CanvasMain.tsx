@@ -307,19 +307,24 @@ const QuickCardsCarousel = ({
   );
 };
 
+const getTabIcon = (label: string) => {
+  const l = label.toLowerCase();
+  if (l.includes("code") || l.includes("dev") || l.includes("script")) return Code;
+  if (l.includes("search") || l.includes("find") || l.includes("look")) return Search;
+  if (l.includes("image") || l.includes("pic") || l.includes("draw") || l.includes("gen")) return Image;
+  if (l.includes("idea") || l.includes("think") || l.includes("brain")) return Lightbulb;
+  if (l.includes("doc") || l.includes("report") || l.includes("file") || l.includes("text")) return FileText;
+  return Search;
+};
+
 const CanvasMain = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [tabs, setTabs] = useState<Tab[]>(defaultTabs);
   const [activeTab, setActiveTab] = useState(defaultTabs[0].id);
+  const [isAddingTab, setIsAddingTab] = useState(false);
+  const [newTabName, setNewTabName] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-  const addTab = () => {
-    const t = tabTemplates[tabs.length % tabTemplates.length];
-    const tab: Tab = { id: Date.now(), icon: t.icon, label: t.label };
-    setTabs((p) => [...p, tab]);
-    setActiveTab(tab.id);
-  };
   const closeTab = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
     if (tabs.length <= 1) return;
@@ -370,12 +375,43 @@ const CanvasMain = () => {
               )}
             </button>
           ))}
-          <button
-            onClick={addTab}
-            className="px-2 py-1.5 text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60 rounded-lg transition-all shrink-0"
-          >
-            <Plus className="w-3 h-3" />
-          </button>
+          {isAddingTab ? (
+            <div className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-muted/60 text-foreground shrink-0 border border-border/40">
+              <Plus className="w-3 h-3 shrink-0" />
+              <input 
+                autoFocus
+                value={newTabName}
+                onChange={(e) => setNewTabName(e.target.value)}
+                onBlur={() => {
+                  if (newTabName.trim()) {
+                    const tabName = newTabName.trim();
+                    const tab = { id: Date.now(), icon: getTabIcon(tabName), label: tabName };
+                    setTabs(p => [...p, tab]);
+                    setActiveTab(tab.id);
+                  }
+                  setIsAddingTab(false);
+                  setNewTabName("");
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.currentTarget.blur();
+                  } else if (e.key === "Escape") {
+                    setIsAddingTab(false);
+                    setNewTabName("");
+                  }
+                }}
+                className="bg-transparent border-none outline-none focus:outline-none w-24 text-foreground placeholder:text-muted-foreground/40"
+                placeholder="Tab name..."
+              />
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsAddingTab(true)}
+              className="px-2 py-1.5 text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60 rounded-lg transition-all shrink-0"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          )}
         </div>
         <textarea
           ref={textareaRef}
