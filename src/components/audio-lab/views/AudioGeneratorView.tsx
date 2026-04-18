@@ -192,7 +192,7 @@ const AudioGeneratorView = () => {
                 max={22}
                 value={duration}
                 onChange={(e) => setDuration(Number(e.target.value))}
-                className="w-24 h-1 accent-primary"
+                className="w-24 h-1 accent-[#404040]"
               />
             </div>
             
@@ -207,7 +207,7 @@ const AudioGeneratorView = () => {
                 max={100}
                 value={influence * 100}
                 onChange={(e) => setInfluence(Number(e.target.value) / 100)}
-                className="w-24 h-1 accent-primary"
+                className="w-24 h-1 accent-[#404040]"
               />
             </div>
           </div>

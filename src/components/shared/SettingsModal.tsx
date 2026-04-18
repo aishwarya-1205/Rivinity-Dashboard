@@ -143,11 +143,10 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
                 <button
                   key={s.id}
                   onClick={() => setActiveSection(s.id)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12.5px] font-medium transition-all duration-150 text-left ${
-                    activeSection === s.id
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12.5px] font-medium transition-all duration-150 text-left ${activeSection === s.id
                       ? "bg-accent/10 dark:bg-accent/20 text-foreground"
                       : "text-muted-foreground/70 hover:text-foreground/80 hover:bg-accent/10"
-                  }`}
+                    }`}
                 >
                   <s.icon className={`w-4 h-4 shrink-0 transition-colors ${activeSection === s.id ? "text-primary" : "text-muted-foreground/50"}`} />
                   {s.label}
@@ -166,11 +165,10 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
                         <button
                           key={t.value}
                           onClick={() => handleThemeChange(t.value)}
-                          className={`flex flex-col items-center gap-2 py-4 rounded-xl border transition-all duration-150 ${
-                            theme === t.value
+                          className={`flex flex-col items-center gap-2 py-4 rounded-xl border transition-all duration-150 ${theme === t.value
                               ? "border-primary/40 bg-white dark:bg-[#1a1c2e] shadow-sm text-foreground ring-1 ring-primary/20"
                               : "border-border/10 bg-white dark:bg-[#1a1c2e]/40 text-muted-foreground/60 hover:border-border/40 hover:text-foreground/80"
-                          }`}
+                            }`}
                         >
                           <t.icon className={`w-5 h-5 ${theme === t.value ? "text-primary" : "text-muted-foreground/40"}`} />
                           <span className="text-[11px] font-medium">{t.label}</span>
@@ -187,11 +185,10 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
                         <button
                           key={f.value}
                           onClick={() => setFontSize(f.value)}
-                          className={`flex-1 py-2 rounded-xl border text-[11px] transition-all duration-150 ${
-                            fontSize === f.value
+                          className={`flex-1 py-2 rounded-xl border text-[11px] transition-all duration-150 ${fontSize === f.value
                               ? "border-primary/40 bg-white dark:bg-[#1a1c2e] shadow-sm text-foreground font-semibold"
                               : "border-border/10 bg-white dark:bg-[#1a1c2e]/40 text-muted-foreground/60 hover:border-border/40"
-                          }`}
+                            }`}
                         >
                           {f.label}
                         </button>
@@ -219,9 +216,9 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
                   />
                 </div>
               )}
-              
+
               {activeSection === "chat" && (
-                 <div className="space-y-4">
+                <div className="space-y-4">
                   <div>
                     <p className="text-[10px] font-bold text-muted-foreground/60 uppercase tracking-widest mb-3">Language</p>
                     <div className="flex items-center gap-2 px-3 py-2 rounded-xl border border-border/20 bg-white dark:bg-[#1a1c2e]">

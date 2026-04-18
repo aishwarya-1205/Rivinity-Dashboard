@@ -235,9 +235,9 @@ const SpeechToTextView = () => {
             ) : (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-glass/20 rounded-xl p-10 text-center cursor-pointer hover:border-primary/30 hover:bg-accent/20 transition-all group"
+                className="border-2 border-dashed border-glass/20 rounded-xl p-10 text-center cursor-pointer hover:border-primary/40 hover:bg-accent/20 transition-all group"
               >
-                <Upload className="w-7 h-7 text-muted-foreground/20 mx-auto mb-3 group-hover:text-primary/40 transition-colors" />
+                <Upload className="w-7 h-7 text-muted-foreground/20 mx-auto mb-3 group-hover:text-primary transition-colors" />
                 <p className="text-[13px] text-foreground/70 font-medium">
                   Drop audio file or click to upload
                 </p>
@@ -310,10 +310,10 @@ const SpeechToTextView = () => {
                 )}
               </div>
               <span className="w-px h-3 bg-glass/20 mx-1" />
-              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
                 <Copy className="w-3.5 h-3.5" />
               </button>
-              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-foreground hover:bg-accent/50 transition-all">
+              <button className="p-1.5 rounded-lg text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
                 <Download className="w-3.5 h-3.5" />
               </button>
             </div>

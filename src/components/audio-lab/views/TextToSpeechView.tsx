@@ -205,7 +205,7 @@ const TextToSpeechView = () => {
                         key={em.label}
                         onClick={() => toggleEmotion(em.label)}
                         className={`flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[11px] font-medium transition-all ${selectedEmotions.includes(em.label)
-                          ? "bg-primary/15 text-primary"
+                          ? "bg-primary/10 text-primary"
                           : "bg-muted/50 text-muted-foreground/60 hover:bg-muted"
                           }`}
                       >

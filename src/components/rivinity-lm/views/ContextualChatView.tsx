@@ -65,7 +65,7 @@ const ContextualChatView = () => {
         {/* Chat Area */}
         <div className="flex-1 overflow-y-auto space-y-4 pr-4">
           {messages.map((msg) => (
-            <div key={msg.id} className={`group flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+            <div key={msg.id} className={`group flex flex-col ${msg.role === "user" ? "items-end" : "items-start"}`}>
               <div className={`max-w-[85%] ${msg.role === "user"
                 ? "rounded-2xl rounded-br-lg gradient-accent text-primary-foreground px-5 py-3"
                 : "rounded-2xl rounded-bl-lg glass border border-glass px-5 py-4"
@@ -76,43 +76,43 @@ const ContextualChatView = () => {
                     <span className="text-[13px]">Thinking...</span>
                   </div>
                 ) : (
-                  <>
-                    <div className="text-[14px] leading-relaxed whitespace-pre-wrap">{msg.content}</div>
-                    {msg.role === "ai" && !msg.thinking && (
-                      <div className="flex items-center gap-1 mt-3 pt-3 border-t border-glass text-muted-foreground/40">
-                        <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
-                          {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
-                        </button>
-                        <button title="Good response" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
-                          <ThumbsUp className="w-3.5 h-3.5" />
-                        </button>
-                        <button title="Bad response" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
-                          <ThumbsDown className="w-3.5 h-3.5" />
-                        </button>
-                        <button title="Share" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
-                          <Share2 className="w-3.5 h-3.5" />
-                        </button>
-                        <button title="Regenerate" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
-                          <RotateCcw className="w-3.5 h-3.5" />
-                        </button>
-                        <button title="Read aloud" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
-                          <Volume2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    )}
-                    {msg.role === "user" && (
-                      <div className="flex items-center gap-1 mt-2 justify-end opacity-0 group-hover:opacity-100 transition-opacity text-primary-foreground/60">
-                        <button title="Edit" className="p-1 rounded-md hover:bg-red-500/20 transition-colors hover:text-red-300">
-                          <Pencil className="w-3.5 h-3.5" />
-                        </button>
-                        <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1 rounded-md hover:bg-red-500/20 transition-colors hover:text-red-300">
-                          {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
-                        </button>
-                      </div>
-                    )}
-                  </>
+                  <div className="text-[14px] leading-relaxed whitespace-pre-wrap">{msg.content}</div>
                 )}
               </div>
+
+              {msg.role === "ai" && !msg.thinking && (
+                <div className="flex items-center gap-0.5 mt-1 ml-1 text-muted-foreground/40">
+                  <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                  <button title="Good response" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    <ThumbsUp className="w-3.5 h-3.5" />
+                  </button>
+                  <button title="Bad response" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    <ThumbsDown className="w-3.5 h-3.5" />
+                  </button>
+                  <button title="Share" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    <Share2 className="w-3.5 h-3.5" />
+                  </button>
+                  <button title="Regenerate" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    <RotateCcw className="w-3.5 h-3.5" />
+                  </button>
+                  <button title="Read aloud" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    <Volume2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+
+              {msg.role === "user" && (
+                <div className="flex items-center gap-0.5 mt-1 mr-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground/40">
+                  <button title="Edit" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={() => copy(msg.content, msg.id)} title="Copy" className="p-1.5 rounded-lg hover:bg-red-500/10 transition-colors hover:text-red-500">
+                    {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-green-500" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

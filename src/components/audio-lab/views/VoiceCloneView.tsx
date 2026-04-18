@@ -213,7 +213,7 @@ const VoiceCloneView = () => {
                     <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest px-2 mb-2">Conversion & Style</p>
                     <div className="grid grid-cols-1 gap-1">
                       {genderOptions.map(g => (
-                        <button key={g.id} onClick={() => { setSelectedGender(g); setGenderDropdownOpen(false); }} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] transition-all ${g.id === selectedGender.id ? 'bg-primary/10 text-primary' : 'hover:bg-accent/40'}`}>
+                        <button key={g.id} onClick={() => { setSelectedGender(g); setGenderDropdownOpen(false); }} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-[12px] transition-all ${g.id === selectedGender.id ? 'bg-primary/20 text-primary' : 'hover:bg-accent/40'}`}>
                           <span>{g.from} {g.to}</span>
                           <span className="flex-1 text-left">{g.label}</span>
                         </button>
@@ -261,7 +261,7 @@ const VoiceCloneView = () => {
               onChange={(e) => setTransformText(e.target.value)}
               placeholder="Enter text to speak..."
               rows={3}
-              className="w-full bg-transparent border border-glass/10 rounded-xl text-[13px] leading-relaxed text-foreground/80 placeholder:text-muted-foreground/20 focus:outline-none focus:border-primary/20 px-4 py-3 resize-none mb-4"
+              className="w-full bg-transparent border border-glass/10 rounded-xl text-[13px] leading-relaxed text-foreground/80 placeholder:text-muted-foreground/20 focus:outline-none focus:border-primary/30 px-4 py-3 resize-none mb-4"
             />
 
             <button

@@ -22,6 +22,8 @@ import {
   ChevronRight,
   Volume2,
   Pencil,
+  BarChart3,
+  BookOpen,
 } from "lucide-react";
 
 interface Message {
@@ -41,10 +43,11 @@ const defaultTabs: Tab[] = [
   { id: 3, icon: Lightbulb, label: "Citation Generator" },
 ];
 const tabTemplates = [
-  { icon: Search, label: "Research" },
-  { icon: Code, label: "Code Gen" },
-  { icon: FileText, label: "Report" },
-  { icon: Lightbulb, label: "Brainstorm" },
+  { icon: Search, label: "Smart Paper Search" },
+  { icon: FileText, label: "Smart Summarization" },
+  { icon: Lightbulb, label: "Citation Generator" },
+  { icon: BarChart3, label: "Deep Analysis" },
+  { icon: BookOpen, label: "Literature Review" },
 ];
 const suggestions = [
   { icon: Code, label: "Write code" },
@@ -84,7 +87,7 @@ const MessageActions = ({ content }: { content: string }) => {
       <button
         onClick={copy}
         title="Copy"
-        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all"
+        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all"
       >
         {copied ? (
           <Check className="w-3.5 h-3.5 text-green-500" />
@@ -95,24 +98,24 @@ const MessageActions = ({ content }: { content: string }) => {
       <button
         title="Good response"
         onClick={() => setLiked(liked === "up" ? null : "up")}
-        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "up" ? "text-primary bg-primary/10" : "text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50"}`}
+        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "up" ? "text-primary bg-primary/10" : "text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10"}`}
       >
         <ThumbsUp className="w-3.5 h-3.5" />
       </button>
       <button
         title="Bad response"
         onClick={() => setLiked(liked === "down" ? null : "down")}
-        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "down" ? "text-red-400 bg-red-400/10" : "text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50"}`}
+        className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${liked === "down" ? "text-red-400 bg-red-400/10" : "text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10"}`}
       >
         <ThumbsDown className="w-3.5 h-3.5" />
       </button>
-      <button title="Share" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Share" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <Share2 className="w-3.5 h-3.5" />
       </button>
-      <button title="Regenerate" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Regenerate" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <RotateCcw className="w-3.5 h-3.5" />
       </button>
-      <button title="Read aloud" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Read aloud" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <Volume2 className="w-3.5 h-3.5" />
       </button>
     </div>
@@ -128,13 +131,13 @@ const UserMessageActions = ({ content }: { content: string }) => {
   };
   return (
     <div className="flex items-center gap-0.5 mt-1.5 mr-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-      <button title="Edit" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all">
+      <button title="Edit" className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all">
         <Pencil className="w-3.5 h-3.5" />
       </button>
       <button
         onClick={copy}
         title="Copy"
-        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-foreground/60 hover:bg-muted/50 transition-all"
+        className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground/40 hover:text-red-500 hover:bg-red-500/10 transition-all"
       >
         {copied ? (
           <Check className="w-3.5 h-3.5 text-green-500" />
@@ -375,43 +378,55 @@ const CanvasMain = () => {
               )}
             </button>
           ))}
-          {isAddingTab ? (
-            <div className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-muted/60 text-foreground shrink-0 border border-border/40">
-              <Plus className="w-3 h-3 shrink-0" />
-              <input 
-                autoFocus
-                value={newTabName}
-                onChange={(e) => setNewTabName(e.target.value)}
-                onBlur={() => {
-                  if (newTabName.trim()) {
-                    const tabName = newTabName.trim();
-                    const tab = { id: Date.now(), icon: getTabIcon(tabName), label: tabName };
+          <button
+            onClick={() => setIsAddingTab(!isAddingTab)}
+            className={`px-3 py-2 flex items-center gap-1 text-[12px] font-medium transition-all shrink-0 ${isAddingTab ? "bg-primary/10 text-primary" : "text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60"}`}
+          >
+            <Plus className={`w-3 h-3 transition-transform duration-300 ${isAddingTab ? "rotate-45" : ""}`} />
+            <span className="sr-only">New Tab</span>
+          </button>
+        </div>
+
+        {/* Template Selection Grid */}
+        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isAddingTab ? "max-h-[400px] opacity-100 border-b border-border/40" : "max-h-0 opacity-0"}`}>
+          <div className="p-4 bg-muted/20">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-[11px] font-bold text-muted-foreground/40 uppercase tracking-widest px-1">Research Tools</p>
+              <div className="flex items-center gap-2">
+                <input
+                  value={newTabName}
+                  onChange={(e) => setNewTabName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && newTabName.trim()) {
+                      const tab = { id: Date.now(), icon: getTabIcon(newTabName.trim()), label: newTabName.trim() };
+                      setTabs(p => [...p, tab]);
+                      setActiveTab(tab.id);
+                      setIsAddingTab(false);
+                      setNewTabName("");
+                    }
+                  }}
+                  className="bg-background/50 border border-border/40 rounded-lg px-3 py-1 text-[11px] outline-none focus:border-primary/40 w-36 transition-all"
+                  placeholder="Custom name..."
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+              {tabTemplates.map((template) => (
+                <button
+                  key={template.label}
+                  onClick={() => {
+                    const tab = { id: Date.now(), icon: template.icon, label: template.label };
                     setTabs(p => [...p, tab]);
                     setActiveTab(tab.id);
-                  }
-                  setIsAddingTab(false);
-                  setNewTabName("");
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.currentTarget.blur();
-                  } else if (e.key === "Escape") {
                     setIsAddingTab(false);
-                    setNewTabName("");
-                  }
-                }}
-                className="bg-transparent border-none outline-none focus:outline-none w-24 text-foreground placeholder:text-muted-foreground/40"
-                placeholder="Tab name..."
-              />
+                  }}
+                  className="flex items-center w-full h-11 px-4 rounded-xl border border-transparent hover:border-primary/20 bg-background/0 hover:bg-background/40 hover:shadow-sm transition-all group"
+                >
+                  <p className="text-[14px] font-medium text-foreground/60 group-hover:text-primary transition-all group-hover:pl-2">{template.label}</p>
+                </button>
+              ))}
             </div>
-          ) : (
-            <button
-              onClick={() => setIsAddingTab(true)}
-              className="px-2 py-1.5 text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60 rounded-lg transition-all shrink-0"
-            >
-              <Plus className="w-3 h-3" />
-            </button>
-          )}
+          </div>
         </div>
         <textarea
           ref={textareaRef}
@@ -437,7 +452,7 @@ const CanvasMain = () => {
             </button>
             <button className="hidden sm:flex items-center gap-1.5 px-2 py-1 rounded-lg text-[11px] font-medium text-muted-foreground/50 hover:bg-muted/40 transition-all ml-1">
               <span className="w-3.5 h-3.5 rounded-full gradient-accent flex items-center justify-center">
-                <Sparkles className="w-2 h-2 text-primary-foreground" />
+                <Sparkles className="w-2 h-2 text-white" />
               </span>
               arc-1a <ChevronDown className="w-2.5 h-2.5 opacity-60" />
             </button>

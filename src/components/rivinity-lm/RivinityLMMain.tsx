@@ -18,17 +18,14 @@ import StudyCompanionView from "./views/StudyCompanionView";
 import DataAnalystView from "./views/DataAnalystView";
 
 const features = [
-  { id: "contextual-chat", icon: MessageSquare, label: "Chat", desc: "Ask about your documents" },
-  { id: "smart-notes", icon: StickyNote, label: "SmartNotes", desc: "Auto-generate Cornell notes" },
-  { id: "flashcards", icon: Layers, label: "Flashcards", desc: "Spaced repetition cards" },
-  { id: "quizzes", icon: HelpCircle, label: "Quizzes", desc: "Interactive quizzes" },
-  { id: "ai-podcast", icon: Podcast, label: "AI Podcast", desc: "Learn on the go" },
-  { id: "voice-transcribe", icon: FileAudio, label: "Transcribe", desc: "Lecture to notes" },
-  { id: "homework-planner", icon: CalendarCheck, label: "Homework", desc: "Smart planning" },
-  { id: "exam-lab", icon: GraduationCap, label: "ExamLab", desc: "Simulate exams" },
-  { id: "debate", icon: Swords, label: "Debate", desc: "Sharpen arguments" },
-  { id: "study-companion", icon: Bot, label: "Companion", desc: "Your AI tutor" },
-  { id: "data-analyst", icon: BarChart3, label: "Data Analyst", desc: "Analyze data" },
+  { id: "contextual-chat", icon: MessageSquare, label: "Document Research", desc: "Collaborate with your study files" },
+  { id: "smart-notes", icon: StickyNote, label: "Cornell Study Notes", desc: "Auto-structured lecture notes" },
+  { id: "flashcards", icon: Layers, label: "Repetition Flashcards", desc: "Spaced learning system" },
+  { id: "quizzes", icon: HelpCircle, label: "Practice Exam Lab", desc: "Test your comprehension" },
+  { id: "ai-podcast", icon: Podcast, label: "AI Podcast Producer", desc: "Audio learning on the go" },
+  { id: "voice-transcribe", icon: FileAudio, label: "Voice Lecture Sync", desc: "Convert speech to text" },
+  { id: "debate", icon: Swords, label: "Mock Debate Trainer", desc: "Sharpen critical thinking" },
+  { id: "study-companion", icon: Bot, label: "AI Study Tutor", desc: "24/7 personalized guidance" },
 ];
 
 interface Tab {
@@ -254,12 +251,12 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
 
             {/* Input */}
             <div className="w-full max-w-[680px] mb-4">
-              <div 
+              <div
                 className="border border-border/60 rounded-2xl shadow-float input-glow transition-all duration-200 bg-background"
                 style={{ overflow: "visible" }}
               >
                 {/* Tabs */}
-                <div 
+                <div
                   className="flex items-center border-b border-border/40 rounded-t-2xl overflow-x-auto"
                   style={{ scrollbarWidth: "none" }}
                 >
@@ -282,43 +279,36 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                       )}
                     </button>
                   ))}
-                  {isAddingTab ? (
-                    <div className="flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium rounded-lg bg-muted/60 text-foreground shrink-0 border border-border/40">
-                      <Plus className="w-3 h-3 shrink-0" />
-                      <input 
-                        autoFocus
-                        value={newTabName}
-                        onChange={(e) => setNewTabName(e.target.value)}
-                        onBlur={() => {
-                          if (newTabName.trim()) {
-                            const tabName = newTabName.trim();
-                            const tab = { id: Date.now(), icon: getTabIcon(tabName), label: tabName };
-                            setTabs(p => [...p, tab]);
-                            setActiveTab(tab.id);
-                          }
-                          setIsAddingTab(false);
-                          setNewTabName("");
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            e.currentTarget.blur();
-                          } else if (e.key === "Escape") {
+                  <button
+                    onClick={() => setIsAddingTab(!isAddingTab)}
+                    className={`px-3 py-2 flex items-center gap-1 text-[12px] font-medium transition-all shrink-0 ${isAddingTab ? "bg-primary/10 text-primary" : "text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60"}`}
+                  >
+                    <Plus className={`w-3 h-3 transition-transform duration-300 ${isAddingTab ? "rotate-45" : ""}`} />
+                  </button>
+                </div>
+
+                {/* Feature Selection Grid */}
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isAddingTab ? "max-h-[500px] opacity-100 border-b border-border/40" : "max-h-0 opacity-0"}`}>
+                  <div className="p-5 bg-muted/20">
+                    <p className="text-[11px] font-bold text-muted-foreground/40 uppercase tracking-widest px-1 mb-4">Study Tools & Modes</p>
+                    <div className="flex flex-col gap-1 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                      {features.map((feature) => (
+                        <button
+                          key={feature.id}
+                          onClick={() => {
+                            const newTab = { id: Date.now(), icon: feature.icon, label: feature.label, featureId: feature.id };
+                            setTabs(p => [...p, newTab]);
+                            setActiveTab(newTab.id);
                             setIsAddingTab(false);
-                            setNewTabName("");
-                          }
-                        }}
-                        className="bg-transparent border-none outline-none focus:outline-none w-24 text-foreground placeholder:text-muted-foreground/40"
-                        placeholder="Tab name..."
-                      />
+                          }}
+                          className="flex flex-col items-start justify-center w-full px-4 py-3 rounded-xl border border-transparent hover:border-primary/20 bg-background/0 hover:bg-background/40 hover:shadow-sm transition-all group min-h-[50px]"
+                        >
+                          <p className="text-[14px] font-semibold text-foreground/60 group-hover:text-primary transition-all group-hover:pl-2">{feature.label}</p>
+                          <p className="text-[11px] text-muted-foreground/30 group-hover:text-muted-foreground/50 transition-all group-hover:pl-2">{feature.desc}</p>
+                        </button>
+                      ))}
                     </div>
-                  ) : (
-                    <button 
-                      onClick={() => setIsAddingTab(true)} 
-                      className="px-3 py-2 flex items-center gap-1 text-[12px] font-medium transition-all shrink-0 text-muted-foreground/40 hover:text-muted-foreground/70 hover:bg-muted/60"
-                    >
-                      <Plus className="w-3 h-3 transition-transform duration-200" />
-                    </button>
-                  )}
+                  </div>
                 </div>
 
 
@@ -327,10 +317,10 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                   ref={textareaRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => { 
-                    if (e.key === "Enter" && !e.shiftKey) { 
-                      e.preventDefault(); 
-                      handleSend(); 
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSend();
                     }
                   }}
                   placeholder="Ask me to teach you anything..."
@@ -410,7 +400,7 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
                   </button>
                 </div>
               </div>
-              
+
               <div className="w-full mt-4">
                 <TopicCardsCarousel
                   cards={topicCards}
