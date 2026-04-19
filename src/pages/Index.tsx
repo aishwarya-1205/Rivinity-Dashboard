@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CanvasSidebar from "@/components/canvas/CanvasSidebar";
-import CanvasTopBar from "@components/canvas/CanvasTopBar";
+import CanvasTopBar from "@/components/canvas/CanvasTopBar";
 import CanvasMain from "@/components/canvas/CanvasMain";
 import CanvasRightPanel from "@/components/canvas/CanvasRightPanel";
 import { PanelLeft } from "lucide-react";
