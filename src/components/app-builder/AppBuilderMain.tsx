@@ -271,7 +271,7 @@ const getTabIcon = (label: string) => {
 const AppBuilderMain = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [tabs, setTabs] = useState<Tab[]>(defaultTabs);
+  const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState(defaultTabs[0].id);
   const [isAddingTab, setIsAddingTab] = useState(false);
   const [newTabName, setNewTabName] = useState("");
@@ -318,7 +318,7 @@ const AppBuilderMain = () => {
       >
         {/* ── Tab bar ── */}
         <div
-          className="flex items-center border-b border-border/40 rounded-t-2xl overflow-x-auto"
+          className="flex items-center rounded-t-2xl overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
         >
           {tabs.map((tab) => (

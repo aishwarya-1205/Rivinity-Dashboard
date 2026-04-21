@@ -323,7 +323,7 @@ const getTabIcon = (label: string) => {
 const CanvasMain = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
-  const [tabs, setTabs] = useState<Tab[]>(defaultTabs);
+  const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState(defaultTabs[0].id);
   const [isAddingTab, setIsAddingTab] = useState(false);
   const [newTabName, setNewTabName] = useState("");
@@ -361,7 +361,7 @@ const CanvasMain = () => {
   const inputArea = (
     <div className="w-full max-w-[660px]">
       <div className="border border-border/60 rounded-2xl shadow-float input-glow transition-all duration-200 overflow-hidden bg-background">
-        <div className="flex items-center border-b border-border/40 overflow-x-auto scrollbar-none gap-0.5 px-2 py-1.5">
+        <div className="flex items-center overflow-x-auto scrollbar-none gap-0.5 px-2 py-1.5">
           {tabs.map((tab) => (
             <button
               key={tab.id}

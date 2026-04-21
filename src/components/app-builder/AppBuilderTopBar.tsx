@@ -22,6 +22,8 @@ import {
   Check,
   X,
   PanelRight,
+  SquareArrowRight,
+  Layout,
 } from "lucide-react";
 
 type Theme = "light" | "dark" | "system";
@@ -169,35 +171,21 @@ const AppBuilderTopBar = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setRightPanelOpen?.(!rightPanelOpen)}
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 mr-1 ${
-              rightPanelOpen
+            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 mr-1 ${rightPanelOpen
                 ? "bg-primary/10 text-[#ff7a18]"
                 : "text-muted-foreground/50 hover:text-foreground/70 hover:bg-muted"
-            }`}
+              }`}
           >
-            <PanelRight className="w-4 h-4" />
+            <SquareArrowRight className="w-4 h-4" />
           </button>
-          <button
-            onClick={() => {
-              setSettingsOpen(true);
-              setProfileOpen(false);
-            }}
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 ${
-              settingsOpen
-                ? "bg-primary/10 text-[#ff7a18]"
-                : "text-muted-foreground/50 hover:text-foreground/70 hover:bg-muted"
-            }`}
-          >
-            <Settings className="w-4 h-4" />
-          </button>
+
           <button
             ref={profileBtnRef}
             onClick={() => {
               setProfileOpen((v) => !v);
             }}
-            className={`w-8 h-8 rounded-xl gradient-accent flex items-center justify-center text-white text-[12px] font-bold transition-all duration-150 hover:opacity-90 ${
-              profileOpen ? "ring-2 ring-[#ff7a18]/30 ring-offset-1" : ""
-            }`}
+            className={`w-8 h-8 rounded-xl gradient-accent flex items-center justify-center text-white text-[12px] font-bold transition-all duration-150 hover:opacity-90 ${profileOpen ? "ring-2 ring-[#ff7a18]/30 ring-offset-1" : ""
+              }`}
           >
             JD
           </button>
@@ -262,11 +250,10 @@ const AppBuilderTopBar = ({
                     <button
                       key={s.id}
                       onClick={() => setActiveSection(s.id)}
-                      className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[12.5px] font-medium transition-all duration-150 text-left w-full ${
-                        activeSection === s.id
+                      className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[12.5px] font-medium transition-all duration-150 text-left w-full ${activeSection === s.id
                           ? "bg-[#ff7a18]/10 text-[#ff7a18]"
                           : "text-muted-foreground/60 hover:bg-muted hover:text-foreground/70"
-                      }`}
+                        }`}
                     >
                       <s.icon className="w-4 h-4 shrink-0" />
                       {s.label}
@@ -283,11 +270,10 @@ const AppBuilderTopBar = ({
                     <button
                       key={s.id}
                       onClick={() => setActiveSection(s.id)}
-                      className={`flex items-center gap-1.5 px-4 py-2.5 text-[12px] font-medium transition-all whitespace-nowrap border-b-2 ${
-                        activeSection === s.id
+                      className={`flex items-center gap-1.5 px-4 py-2.5 text-[12px] font-medium transition-all whitespace-nowrap border-b-2 ${activeSection === s.id
                           ? "border-[#ff7a18] text-[#ff7a18]"
                           : "border-transparent text-muted-foreground/60 hover:text-foreground/70"
-                      }`}
+                        }`}
                     >
                       <s.icon className="w-3.5 h-3.5" />
                       {s.label}
@@ -308,11 +294,10 @@ const AppBuilderTopBar = ({
                             <button
                               key={t.value}
                               onClick={() => handleThemeChange(t.value)}
-                              className={`flex flex-col items-center gap-2 py-4 rounded-xl border transition-all duration-150 ${
-                                theme === t.value
+                              className={`flex flex-col items-center gap-2 py-4 rounded-xl border transition-all duration-150 ${theme === t.value
                                   ? "border-[#ff7a18]/50 bg-[#ff7a18]/10 text-[#ff7a18]"
                                   : "border-border/50 bg-muted/40 text-muted-foreground/60 hover:border-border hover:text-foreground/70"
-                              }`}
+                                }`}
                             >
                               <t.icon className="w-5 h-5" />
                               <span className="text-[12px] font-medium">
@@ -335,11 +320,10 @@ const AppBuilderTopBar = ({
                             <button
                               key={f.value}
                               onClick={() => setFontSize(f.value)}
-                              className={`flex-1 py-2.5 rounded-xl border text-center transition-all duration-150 ${f.size} ${
-                                fontSize === f.value
+                              className={`flex-1 py-2.5 rounded-xl border text-center transition-all duration-150 ${f.size} ${fontSize === f.value
                                   ? "border-[#ff7a18]/50 bg-[#ff7a18]/10 text-[#ff7a18] font-medium"
                                   : "border-border/50 bg-muted/40 text-muted-foreground/60 hover:border-border"
-                              }`}
+                                }`}
                             >
                               {f.label}
                             </button>
@@ -449,14 +433,14 @@ const AppBuilderTopBar = ({
                         label="Save chat history"
                         desc="Store conversations on server"
                         value={true}
-                        onChange={() => {}}
+                        onChange={() => { }}
                       />
                       <ToggleRow
                         icon={Globe}
                         label="Usage analytics"
                         desc="Help improve Rivinity"
                         value={false}
-                        onChange={() => {}}
+                        onChange={() => { }}
                       />
                     </div>
                   )}
@@ -531,6 +515,12 @@ const AppBuilderTopBar = ({
               ].map((item) => (
                 <button
                   key={item.label}
+                  onClick={() => {
+                    if (item.label === "Account settings") {
+                      setSettingsOpen(true);
+                      setProfileOpen(false);
+                    }
+                  }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12px] font-medium text-foreground/70 hover:bg-muted hover:text-foreground transition-all duration-150"
                 >
                   <item.icon className="w-3.5 h-3.5 text-muted-foreground/50" />

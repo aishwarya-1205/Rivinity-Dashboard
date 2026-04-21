@@ -22,6 +22,7 @@ import {
   Check,
   X,
   PanelRight,
+  SquareArrowRight,
 } from "lucide-react";
 import SettingsModal from "../shared/SettingsModal";
 
@@ -170,35 +171,21 @@ const CanvasTopBar = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => setRightPanelOpen?.(!rightPanelOpen)}
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 mr-1 ${
-              rightPanelOpen
+            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 mr-1 ${rightPanelOpen
                 ? "bg-primary/10 text-[#ff7a18]"
                 : "text-muted-foreground/50 hover:text-foreground/70 hover:bg-muted"
-            }`}
+              }`}
           >
-            <PanelRight className="w-4 h-4" />
+            <SquareArrowRight className="w-4 h-4" />
           </button>
-          <button
-            onClick={() => {
-              setSettingsOpen(true);
-              setProfileOpen(false);
-            }}
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-150 ${
-              settingsOpen
-                ? "bg-primary/10 text-[#ff7a18]"
-                : "text-muted-foreground/50 hover:text-foreground/70 hover:bg-muted"
-            }`}
-          >
-            <Settings className="w-4 h-4" />
-          </button>
+
           <button
             ref={profileBtnRef}
             onClick={() => {
               setProfileOpen((v) => !v);
             }}
-            className={`w-8 h-8 rounded-xl gradient-accent flex items-center justify-center text-white text-[12px] font-bold transition-all duration-150 hover:opacity-90 ${
-              profileOpen ? "ring-2 ring-[#ff7a18]/30 ring-offset-1" : ""
-            }`}
+            className={`w-8 h-8 rounded-xl gradient-accent flex items-center justify-center text-white text-[12px] font-bold transition-all duration-150 hover:opacity-90 ${profileOpen ? "ring-2 ring-[#ff7a18]/30 ring-offset-1" : ""
+              }`}
           >
             JD
           </button>
@@ -249,6 +236,12 @@ const CanvasTopBar = ({
               ].map((item) => (
                 <button
                   key={item.label}
+                  onClick={() => {
+                    if (item.label === "Account settings") {
+                      setSettingsOpen(true);
+                      setProfileOpen(false);
+                    }
+                  }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12px] font-medium text-foreground/70 hover:bg-muted hover:text-foreground transition-all duration-150"
                 >
                   <item.icon className="w-3.5 h-3.5 text-muted-foreground/50" />

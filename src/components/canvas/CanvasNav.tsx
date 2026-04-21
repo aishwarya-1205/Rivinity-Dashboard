@@ -20,12 +20,7 @@ const CanvasNav = () => {
 
         {/* Right */}
         <div className="flex items-center gap-1.5">
-          <button
-            onClick={() => setSettingsOpen(true)}
-            className="w-8 h-8 rounded-xl flex items-center justify-center hover:bg-accent transition-colors text-muted-foreground/50"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
+
           <Avatar className="w-7 h-7 rounded-lg">
             <AvatarFallback className="rounded-lg bg-secondary/10 text-secondary text-[10px] font-medium">
               JD

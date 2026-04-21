@@ -170,7 +170,7 @@ const getTabIcon = (label: string) => {
 
 const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
   const [input, setInput] = useState("");
-  const [tabs, setTabs] = useState<Tab[]>(defaultTabs);
+  const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState(defaultTabs[0].id);
   const [promptMode, setPromptMode] = useState("Chat");
   const [responseLength, setResponseLength] = useState("Medium");
@@ -257,7 +257,7 @@ const RivinityLMMain = ({ activeFeature, onFeatureChange }: Props) => {
               >
                 {/* Tabs */}
                 <div
-                  className="flex items-center border-b border-border/40 rounded-t-2xl overflow-x-auto"
+                  className="flex items-center rounded-t-2xl overflow-x-auto"
                   style={{ scrollbarWidth: "none" }}
                 >
                   {tabs.map((tab) => (
